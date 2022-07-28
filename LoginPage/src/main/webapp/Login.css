@@ -1,0 +1,66 @@
+@charset "UTF-8";
+
+body,html
+{
+	background-image:url("businessman-working-on.jpg");
+	background-repeat: no-repeat;
+	height:100%;
+	background-size: cover;
+	 
+}
+form
+{
+	text-align:center;
+}
+
+h1
+{
+	text-align:center;
+}
+
+a:link,a:visited
+{
+	color:black;
+	background-color: transparent;
+	padding: 15px 25px;
+  text-align: center;
+  display: inline-block;
+}
+
+input[type=text], input[type=password] {
+  width: 50%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid black;
+  box-sizing: border-box;
+}
+
+.loginbtn{
+	 width: 50%;  
+    height: 50px;  
+    border: none;  
+    border-radius: 50px;  
+    padding-left: 7px;  
+    color: black;  
+	background-color:LightSkyBlue;
+	box-shadow: 5px 10px 8px;
+	 opacity: 0.8;
+	
+}
+
+.container {
+  padding: 16px;
+ position:absolute;
+ top:220px;
+    bottom: 220px;
+    left: 0;
+    right: 0;
+ margin: auto;
+  border-radius: 40px ;  
+  border:2px solid;
+  width:40%;
+   background-color:rgba(240, 240, 240,0.5); 
+  
+  }
+
