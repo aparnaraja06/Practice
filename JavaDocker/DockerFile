@@ -1,0 +1,7 @@
+FROM openjdk
+COPY src JavaDocker
+WORKDIR JavaDocker
+RUN mkdir -p bin
+RUN javac -d bin ./demo/demo.java
+WORKDIR bin
+CMD ["java", "demo.Demo]
