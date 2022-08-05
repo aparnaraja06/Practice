@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import accounts.Accounts;
 import custom.CustomException;
+import validate.Validate;
 
 /**
  * Servlet implementation class PasswordServlet
@@ -48,8 +49,7 @@ public class PasswordServlet extends HttpServlet {
 		int emp_id=(int)session.getAttribute("emp_id");
 		
 		
-		//System.out.println("Emp id : "+emp_id);
-		//int emp_id=Integer.valueOf(id);
+		
 		
 		PrintWriter out=response.getWriter();
 		
@@ -70,21 +70,25 @@ public class PasswordServlet extends HttpServlet {
 				
 				out.print(error);
 				
-				//RequestDispatcher dispatch=request.getRequestDispatcher("/Password.jsp");
-				//dispatch.include(request, response);
+				
 			}
 			else
 			{
 				request.setAttribute("Message",msg);
 				
 				out.print(msg);
-				//RequestDispatcher dispatch=request.getRequestDispatcher("Home.jsp");
-				//dispatch.forward(request, response);
+				
 			}
 		}
 		catch(CustomException e)
 		{
-			System.out.println(e.getMessage());
+            String error=e.getMessage();
+			
+            Validate validator=(Validate)request.getServletContext().getAttribute("Validate");
+			
+			int code = validator.addError(error);
+			
+			response.sendError(code);
 		}
 		
 		

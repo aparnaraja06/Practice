@@ -17,7 +17,7 @@
 <h2>PASSWORD</h2><br><br>
 <input type="password" placeholder="Enter Password" id= "pass" name="password" required>
 <p id="result"></p><br><br>
-<input type="submit" id="loginbtn" value="LOGIN" onclick="welcome()"><br><br>
+<input type="button" id="loginbtn" value="LOGIN" onclick="welcome()"><br><br>
 </form>
 </div>
 
@@ -37,25 +37,59 @@
 			data :{pass : pass},
 			success:function(result)
 			{
-				//alert(result);
+				
 				
 				if(result=="Incorrect password")
 				{
-					alert("Error");
-					
-					//var successUrl = "Password.jsp";
-				    //window.location.href = successUrl;
+					 $("#result").empty();
+					 
 				    $('#result').html("Incorrect Password");
+				    
+				    $("#pass").click(function(){
+						  $("#result").empty();
+						}); 
 				}
 				else
 				{
-					alert("success");
+				
 					var successUrl = "Home.jsp";
 				    window.location.href = successUrl;
 				}
 				
-			}
+			},
 			
+			 error: function(xhr)
+				{
+
+					try
+					{
+					if(xhr.status==401)
+					{
+						throw "Oops! Connection failed! "; // No I18N
+					}
+					else if(xhr.status==402)
+					{
+						throw "Error! couldn't close Connection! "; // No I18N
+					}
+					else
+					{
+						throw "Error! Something went wrong"; // No I18N
+					}
+					}
+					catch(err)
+					{
+					$("#error").empty();
+					  
+			        
+					 $('#error').append(err);
+					 	 
+					 
+					 $("#name").click(function()
+						{
+						  $("#error").empty();
+						});
+					}
+					}
 			
 		});
 	}

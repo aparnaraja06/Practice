@@ -1,6 +1,7 @@
 package login;
 
 import java.io.IOException;
+
 import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import accounts.Accounts;
 import custom.CustomException;
+import validate.Validate;
 
 /**
  * Servlet implementation class LoginServlet
@@ -29,7 +31,9 @@ public class LoginServlet extends HttpServlet {
    public void init(ServletConfig config)throws ServletException
    {
 	   Accounts account=new Accounts();
+	   Validate validator=new Validate();
 	   config.getServletContext().setAttribute("Instance", account);
+	   config.getServletContext().setAttribute("Validate", validator);
 		super.init(config);
    }
 
@@ -56,7 +60,6 @@ public class LoginServlet extends HttpServlet {
 			Accounts account=(Accounts)request.getServletContext().getAttribute("Instance");
 			
 			int id=account.checkUsername(name);
-						System.out.println("Id : "+id);
 			
 			String msg="Invalid username";
 			
@@ -64,32 +67,35 @@ public class LoginServlet extends HttpServlet {
 			
 			if(id==0)
 			{
-				//request.setAttribute("Error",msg);
 				
 				session.setAttribute("Error", msg);
 				
 				out.print(msg);
 				
-				//RequestDispatcher dispatch=request.getRequestDispatcher("Login.jsp");
-				//dispatch.include(request, response);
 				
 			}
 			else
 			{
-				//request.setAttribute("emp_id", id);
+				
 				
 				session.setAttribute("emp_id", id);				
 				
-				out.print(id);
+			    out.print(id);
 				
-				//RequestDispatcher dispatch=request.getRequestDispatcher("Password.jsp");
-				//dispatch.forward(request, response);
 				
 			}
 		}
 		catch(CustomException e)
 		{
-			System.out.println(e.getMessage());
+			
+			String msg=e.getMessage();
+			
+			Validate validator=(Validate)request.getServletContext().getAttribute("Validate");
+			
+			int code = validator.addError(msg);
+			
+			response.sendError(code);
+			
 		}
 				
 		
