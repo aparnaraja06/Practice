@@ -1,6 +1,7 @@
 package add;
 
 import java.io.IOException;
+
 import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
@@ -11,9 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import custom.CustomException;
+import instance.CreateInstance;
 import operation.CoinOperation;
 import user.User;
-import validate.Validate;
+import validate.ErrorMsg;
+
 
 /**
  * Servlet implementation class AddServlet
@@ -23,24 +26,12 @@ public class AddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
    
-    public AddServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
+  
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		 response.setContentType("text/html");
-			
-
-			PrintWriter out=response.getWriter();
 			
 			String role =  request.getParameter("role");
 			
@@ -49,7 +40,7 @@ public class AddServlet extends HttpServlet {
 			
 			try
 			{
-				CoinOperation coin=(CoinOperation)request.getServletContext().getAttribute("Instance");
+				CoinOperation coin = CreateInstance.COINOPERATION.getCoinInstance();
 				
 				int user_id=coin.getId(mail);
 				
@@ -80,12 +71,11 @@ public class AddServlet extends HttpServlet {
 			}
 			catch(CustomException e)
 			{
-                String msg=e.getMessage();
+                String msg=e.getMessage();	
 				
+                ErrorMsg err = ErrorMsg.valueOf(msg);
 				
-				Validate validator=(Validate)request.getServletContext().getAttribute("Validate");
-				
-				int code = validator.addError(msg);
+				int code = err.getCode();
 				
 				response.sendError(code);
 			}

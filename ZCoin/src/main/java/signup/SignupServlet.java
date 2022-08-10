@@ -1,20 +1,20 @@
 package signup;
 
 import java.io.IOException;
+
 import java.io.PrintWriter;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import custom.CustomException;
+import instance.CreateInstance;
 import operation.CoinOperation;
 import user.User;
-import validate.Validate;
+import validate.ErrorMsg;
 
 /**
  * Servlet implementation class SignupServlet
@@ -23,7 +23,7 @@ import validate.Validate;
 public class SignupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	public void init(ServletConfig config)throws ServletException
+	/*public void init(ServletConfig config)throws ServletException
 	   {
 		  CoinOperation coin = new CoinOperation();
 		  Validate validator = new Validate();
@@ -31,23 +31,15 @@ public class SignupServlet extends HttpServlet {
 		   config.getServletContext().setAttribute("Validate", validator);
 			super.init(config);
 	   }
+	   */
 
 	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");
 		
-		//System.out.println("Inside servlet");
 		PrintWriter out=response.getWriter();
 		
-		CoinOperation coin = (CoinOperation) request.getServletContext().getAttribute("Instance");
+		//CoinOperation coin = (CoinOperation) request.getServletContext().getAttribute("Instance");
 		
 		String name = request.getParameter("name");
 		String mail = request.getParameter("mail");
@@ -60,6 +52,8 @@ public class SignupServlet extends HttpServlet {
 		
 		try
 		{
+			CoinOperation coin = CreateInstance.COINOPERATION.getCoinInstance();
+			
 			long mobile_num = Long.parseLong(mobile);
 			double rc_amount = Double.parseDouble(amount);
 			
@@ -99,13 +93,12 @@ public class SignupServlet extends HttpServlet {
 			//System.out.println(e.getMessage());
             String error=e.getMessage();
 			
-            Validate validator=(Validate)request.getServletContext().getAttribute("Validate");
+            ErrorMsg err = ErrorMsg.valueOf(error);
 			
-			int code = validator.addError(error);
+			int code = err.getCode();
 			
-			System.out.println("Code : "+code);
+			response.sendError(code);		
 			
-			response.sendError(code);
 		}
 		
 		

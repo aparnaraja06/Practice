@@ -1,6 +1,7 @@
 package login;
 
 import java.io.IOException;
+
 import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
@@ -11,8 +12,9 @@ import javax.servlet.http.HttpSession;
 
 import checker.Checker;
 import custom.CustomException;
+import instance.CreateInstance;
 import operation.CoinOperation;
-import validate.Validate;
+import validate.ErrorMsg;
 
 /**
  * Servlet implementation class PasswordServlet
@@ -22,22 +24,14 @@ public class PasswordServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     
-    public PasswordServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-	}
-
-	
+   	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 response.setContentType("text/html");
 		
-		CoinOperation coin=(CoinOperation)request.getServletContext().getAttribute("Instance");
+		//CoinOperation coin=(CoinOperation)request.getServletContext().getAttribute("Instance");
+
+
 		
 		String pass1=request.getParameter("pass");
 				
@@ -51,6 +45,8 @@ response.setContentType("text/html");
 		
 		try
 		{
+			CoinOperation coin = CreateInstance.COINOPERATION.getCoinInstance();
+			
 			String role = coin.getRole(user_id);
 			
 			Checker check = new Checker();
@@ -85,10 +81,9 @@ response.setContentType("text/html");
 		{
             String error=e.getMessage();
 			
-            Validate validator=(Validate)request.getServletContext().getAttribute("Validate");
+            ErrorMsg err = ErrorMsg.valueOf(error);
 			
-			int code = validator.addError(error);
-			
+			int code = err.getCode();
 			
 			response.sendError(code);
 		}

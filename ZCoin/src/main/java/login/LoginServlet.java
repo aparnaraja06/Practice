@@ -1,6 +1,7 @@
 package login;
 
 import java.io.IOException;
+
 import java.io.PrintWriter;
 
 import javax.servlet.ServletConfig;
@@ -11,8 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import custom.CustomException;
+import instance.CreateInstance;
 import operation.CoinOperation;
-import validate.Validate;
+import validate.ErrorMsg;
 
 /**
  * Servlet implementation class LoginServlet
@@ -21,24 +23,20 @@ import validate.Validate;
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	public void init(ServletConfig config)throws ServletException
+	/*public void init(ServletConfig config)throws ServletException
 	   {
 		  CoinOperation coin = new CoinOperation();
 		  Validate validator = new Validate();
 		   config.getServletContext().setAttribute("Instance", coin);
 		   config.getServletContext().setAttribute("Validate", validator);
 			super.init(config);
-	   }
-       
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-	}
-
-	
+	   }*/
+       	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
 		 response.setContentType("text/html");
+		 
 			
 			PrintWriter out=response.getWriter();
 			
@@ -46,7 +44,9 @@ public class LoginServlet extends HttpServlet {
 			
 			try
 			{
-				CoinOperation coin=(CoinOperation)request.getServletContext().getAttribute("Instance");
+				//CoinOperation coin=(CoinOperation)request.getServletContext().getAttribute("Instance");
+				
+				CoinOperation coin = CreateInstance.COINOPERATION.getCoinInstance();
 				
 				int id=coin.getId(name);
 				
@@ -80,10 +80,9 @@ public class LoginServlet extends HttpServlet {
 				
 				String msg=e.getMessage();
 				
+				ErrorMsg err = ErrorMsg.valueOf(msg);
 				
-				Validate validator=(Validate)request.getServletContext().getAttribute("Validate");
-				
-				int code = validator.addError(msg);
+				int code = err.getCode();
 				
 				response.sendError(code);
 				

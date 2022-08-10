@@ -1,5 +1,6 @@
 <%@ page import="operation.CoinOperation" %>
 <%@ page import="user.User" %>
+<%@ page import="instance.CreateInstance"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -11,7 +12,7 @@
 </head>
 <body>
 <%
-CoinOperation coin = (CoinOperation)request.getServletContext().getAttribute("Instance");
+CoinOperation coin = CreateInstance.COINOPERATION.getCoinInstance();
 
 int id = (int)session.getAttribute("user_id");
 

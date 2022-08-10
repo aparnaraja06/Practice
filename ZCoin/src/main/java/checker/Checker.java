@@ -8,7 +8,7 @@ public class Checker {
 	{
 		if(name==null || name.isEmpty())
 		{
-			throw new CustomException("Username should not be empty!"); // No I18N
+			throw new CustomException("USERNAME"); // No I18N
 		}
 	}
 	
@@ -16,7 +16,7 @@ public class Checker {
 	{
 		if(pass==null || pass.isEmpty())
 		{
-			throw new CustomException("Password should not be empty!"); // No I18N
+			throw new CustomException("PASSWORD"); // No I18N
 		}
 	}
 

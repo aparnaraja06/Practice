@@ -68,7 +68,7 @@ public class MailDb {
 			
 		}
 		catch (Exception e) {
-			throw new CustomException("Mail id already exists");
+			throw new CustomException("MAIL");
 		}
 	}
 	
@@ -93,6 +93,10 @@ public class MailDb {
 				
 				return mail;
 			}
+		}
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
 		}
 		catch (Exception e) {
 			

@@ -24,7 +24,13 @@ public class UserDb
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query)) {
 			statement.executeUpdate();
-		} catch (Exception e) {
+		} 
+		catch(CustomException e)
+		{
+			throw new CustomException(e);
+		}
+		catch (Exception e) {
+			
 			throw new CustomException("Unable to create User Table");
 		}
 	}
@@ -51,6 +57,10 @@ public class UserDb
 				return role;
 			}
 		}
+		catch(CustomException e)
+		{
+			throw new CustomException(e);
+		}
 		catch (Exception e) {
 			throw new CustomException("Unable to get Role");
 		}
@@ -76,6 +86,10 @@ public class UserDb
 				
 				return password;
 			}
+		}
+		catch(CustomException e)
+		{
+			throw new CustomException(e);
 		}
 		catch (Exception e) {
 			throw new CustomException("Unable to get password");
@@ -120,6 +134,10 @@ public class UserDb
 			}
 			
 		}
+		catch(CustomException e)
+		{
+			throw new CustomException(e);
+		}
 		catch (Exception e) {
 			throw new CustomException("Unable to add user");
 		}
@@ -157,8 +175,11 @@ public class UserDb
 				return list;
 			}
 		}
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
 		catch (Exception e) {
-			System.out.println(e.getMessage());
 			throw new CustomException("Unable to fetch data");
 		}
 	}
@@ -177,7 +198,12 @@ public class UserDb
 			
 			return user;
 			
-		} catch (Exception e) {
+		} 
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
 			throw new CustomException("Unable to update data");
 		}
 	}
@@ -199,7 +225,12 @@ public class UserDb
 			
 			return user;
 			
-		} catch (Exception e) {
+		} 
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
 			throw new CustomException("Unable to update data");
 		}
 	}
@@ -230,6 +261,10 @@ public class UserDb
 			}
 			
 		}
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
 		catch (Exception e) {
 			throw new CustomException("Unable to get user details");
 		}
@@ -247,6 +282,10 @@ public class UserDb
 			
 			statement.executeUpdate();
 			
+		}
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
 		}
 		catch (Exception e) {
 			throw new CustomException("Unable to update password"); // No I18N

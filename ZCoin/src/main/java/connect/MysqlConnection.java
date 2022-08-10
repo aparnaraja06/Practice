@@ -27,7 +27,7 @@ public enum MysqlConnection
 			}
 			catch(Exception e)
 			{
-				throw new CustomException("Oops! Connection failed");
+				throw new CustomException("CONNECTION");
 			}
 		}
 		else
@@ -46,7 +46,7 @@ public enum MysqlConnection
 			}
 			catch(Exception e)
 			{
-				throw new Exception("Oops! failed to close connection");
+				throw new Exception("CLOSE_CONNECTION");
 			}
 		}
 	}

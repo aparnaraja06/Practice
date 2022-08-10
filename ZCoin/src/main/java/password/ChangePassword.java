@@ -1,6 +1,7 @@
 package password;
 
 import java.io.IOException;
+
 import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
@@ -11,8 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import custom.CustomException;
+import instance.CreateInstance;
 import operation.CoinOperation;
-import validate.Validate;
+import validate.ErrorMsg;
+
 
 /**
  * Servlet implementation class ChangePassword
@@ -22,24 +25,12 @@ public class ChangePassword extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
    
-    public ChangePassword() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-		protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
+		
 		
          response.setContentType("text/html"); // No I18N
 		
-		CoinOperation coin=(CoinOperation)request.getServletContext().getAttribute("Instance");
 		
 		String old=request.getParameter("old");
 				
@@ -47,12 +38,12 @@ public class ChangePassword extends HttpServlet {
 		int user_id=(int)session.getAttribute("user_id");
 		
 		
-		PrintWriter out=response.getWriter();
-		
 		
 		
 		try
 		{
+			CoinOperation coin = CreateInstance.COINOPERATION.getCoinInstance();
+			
 			String pass = coin.getPassword(user_id);
 			
 			if(pass.equals(old))
@@ -82,9 +73,9 @@ public class ChangePassword extends HttpServlet {
 			String msg=e.getMessage();
 			
 			
-			Validate validator=(Validate)request.getServletContext().getAttribute("Validate");
+			ErrorMsg err = ErrorMsg.valueOf(msg);
 			
-			int code = validator.addError(msg);
+			int code = err.getCode();
 			
 			response.sendError(code);
 			

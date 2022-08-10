@@ -12,12 +12,8 @@ public class CoinOperation
 
 	CoinDb coin = new CoinDb();
 	
-	public CoinOperation()
-	{
-		createTable();
-	}
 	
-	public void createTable()
+	public void createTable()throws CustomException
 	{
 		try
 		{
@@ -25,7 +21,11 @@ public class CoinOperation
 		}
 		catch(CustomException e)
 		{
-			System.out.println(e.getMessage());
+			throw new CustomException(e.getMessage());
+		}
+		catch(Exception e)
+		{
+			throw new CustomException(e.getMessage());
 		}
 	}
 	

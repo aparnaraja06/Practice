@@ -1,6 +1,7 @@
 <%@ page import="operation.CoinOperation" %>
 <%@ page import="user.User" %>
 <%@ page import="account.Account" %>
+<%@ page import="instance.CreateInstance"%>
 <%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -17,7 +18,7 @@
 </jsp:include>
 <p id="result"></p>
 <%
-CoinOperation coin = (CoinOperation)request.getServletContext().getAttribute("Instance");
+CoinOperation coin = CreateInstance.COINOPERATION.getCoinInstance();
 
 String role = (String)session.getAttribute("Role");
 %>

@@ -17,7 +17,12 @@ public class TransactionDb
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query)) {
 			statement.executeUpdate();
-		} catch (Exception e) {
+		} 
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
 			throw new CustomException("Unable to create Transaction Table");
 		}
 	}

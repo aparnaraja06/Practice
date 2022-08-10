@@ -18,7 +18,12 @@ public class AccountDb {
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query)) {
 			statement.executeUpdate();
-		} catch (Exception e) {
+		} 
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
 			throw new CustomException("Unable to create Account Table");
 		}
 	}
@@ -50,6 +55,10 @@ public class AccountDb {
 				return acc_num;
 			}
 		}
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
 		catch (Exception e) {
 			throw new CustomException("Unable to create Account Table");
 		}
@@ -78,6 +87,10 @@ public class AccountDb {
 				
 				return account;
 			}
+		}
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
 		}
 		catch (Exception e) {
 			throw new CustomException("Unable to Fetch Account details");
