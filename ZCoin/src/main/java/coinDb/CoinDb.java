@@ -107,5 +107,25 @@ public class CoinDb
 		return result;
 	}
 	
+	public int getAccountNumById(int id)throws CustomException
+	{
+		return accountObj.getAccountNumById(id);
+	}
+	
+	public double getRcBalance(int acc_num)throws CustomException
+	{
+		return accountObj.getRcBalance(acc_num);
+	}
+	
+	public boolean withdrawRc(int acc_num, double amount)throws CustomException
+	{
+		return accountObj.withdrawRc(acc_num, amount);
+	}
+	
+	public boolean depositRc(int acc_num, double amount)throws CustomException
+	{
+		return accountObj.depositRc(acc_num, amount);
+	}
+	
 	
 }

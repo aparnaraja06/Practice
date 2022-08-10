@@ -86,9 +86,29 @@ public class CoinOperation
 	{
 		return coin.zCoinRate();
 	}
+	public double changeZCoinRate(double amount)
+	{
+		return coin.changeZCoinRate(amount);
+	}
 	public String getDate()
 	{
 		return coin.getDate();
+	}
+	public int getAccountNumById(int id)throws CustomException
+	{
+		return coin.getAccountNumById(id);
+	}
+	public double getRcBalance(int acc_num)throws CustomException
+	{
+		return coin.getRcBalance(acc_num);
+	}
+	public boolean withdrawRc(int acc_num, double amount)throws CustomException
+	{
+		return coin.withdrawRc(acc_num, amount);
+	}
+	public boolean depositRc(int acc_num, double amount)throws CustomException
+	{
+		return coin.depositRc(acc_num, amount);
 	}
 	
 	

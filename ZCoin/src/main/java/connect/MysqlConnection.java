@@ -27,7 +27,7 @@ public enum MysqlConnection
 			}
 			catch(Exception e)
 			{
-				throw new CustomException("CONNECTION");
+				throw new CustomException("CONNECTION"); // No I18N
 			}
 		}
 		else
@@ -46,7 +46,7 @@ public enum MysqlConnection
 			}
 			catch(Exception e)
 			{
-				throw new Exception("CLOSE_CONNECTION");
+				throw new Exception("CLOSE_CONNECTION"); // No I18N
 			}
 		}
 	}

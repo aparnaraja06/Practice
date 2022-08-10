@@ -97,5 +97,130 @@ public class AccountDb {
 		}
 		
 	}
+	
+	public int getAccountNumById(int id)throws CustomException
+	{
+		String query = "SELECT account_num FROM account WHERE user_id=?";
+		
+		int account_num=0;
+		
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+				PreparedStatement.RETURN_GENERATED_KEYS)) 
+		{
+			statement.setInt(1, id);
+			
+			try (ResultSet result = statement.executeQuery()) 
+			{
+				while (result.next()) 
+				{
+					account_num=result.getInt("account_num");
+				}
+				
+				return account_num;
+			}
+		}
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
+			throw new CustomException("Unable to get account number");
+		}
+	}
+	
+	public double getRcBalance(int acc_num)throws CustomException
+	{
+		String query="SELECT rc_amount FROM account WHERE account_num=?";
+		
+		double amount=0.0;
+		
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+				PreparedStatement.RETURN_GENERATED_KEYS)) 
+		{
+			statement.setInt(1, acc_num);
+			
+			try (ResultSet result = statement.executeQuery()) 
+			{
+				while (result.next()) 
+				{
+					amount =  result.getDouble("rc_amount");
+				}
+				
+				return amount;
+			}
+		}
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
+			throw new CustomException("Unable to get balance");
+		}
+
+
+					
+	}
+	
+	public boolean withdrawRc(int acc_num, double amount)throws CustomException
+	{
+		double balance = getRcBalance(acc_num);
+		
+		if(balance < amount)
+		{
+			throw new CustomException("WITHDRAW");
+		}
+		
+		double total = balance-amount;
+		
+		String query = "UPDATE account SET rc_amount=? WHERE account_num=?";
+		
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+				PreparedStatement.RETURN_GENERATED_KEYS)) 
+		{
+			statement.setDouble(1, total);
+			statement.setInt(2, acc_num);
+			
+			statement.executeUpdate();
+			
+			return true;
+		}
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
+			throw new CustomException("Unable to withdraw");
+		}
+	
+	}
+	
+	public boolean depositRc(int acc_num, double amount)throws CustomException
+	{
+		double balance = getRcBalance(acc_num);
+		
+		double total = balance+amount;
+		
+		String query = "UPDATE account SET rc_amount=? WHERE account_num=?";
+		
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+				PreparedStatement.RETURN_GENERATED_KEYS)) 
+		{
+			statement.setDouble(1, total);
+			statement.setInt(2, acc_num);
+			
+			statement.executeUpdate();
+			
+			return true;
+		}
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
+			throw new CustomException("Unable to Deposit");
+		}
+	
+	}
+
 
 }

@@ -18,7 +18,12 @@ public class MailDb {
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query)) {
 			statement.executeUpdate();
-		} catch (Exception e) {
+		} 
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
 			throw new CustomException("Unable to create Mail Table");
 		}
 	}
@@ -48,7 +53,10 @@ public class MailDb {
 				return id;
 			}
 		}
-
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
 		catch (Exception e) {
 			throw new CustomException("Id not available");
 		}
@@ -67,8 +75,12 @@ public class MailDb {
 			statement.executeUpdate();
 			
 		}
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
 		catch (Exception e) {
-			throw new CustomException("MAIL");
+			throw new CustomException("MAIL"); // No I18N
 		}
 	}
 	
