@@ -40,9 +40,9 @@
 			type : 'POST', // No I18N
 			url: 'change', // No I18N
 			data :{old : old, new1 : new1, new2 : new2},
-			success:function(result)
+			success:function(message)
 			{
-				if(result=="Password doesn't match")
+				if(message=="Password doesn't match")
 				{
 					$("#result").empty();
 					 
@@ -52,7 +52,7 @@
 						  $("#result").empty();
 						});
 				}
-				else if(result=="Incorrect password")
+				else if(message=="Incorrect password")
 				{
 					$("#resultt").empty();
 					 
@@ -92,6 +92,11 @@
 				{
 					throw "Password should not be empty!";  // No I18N
 				}
+				else if(xhr.status==406)
+				{
+					
+					throw "Password should contain 8 characters";
+				}
 				else
 				{
 					throw "Error! Something went wrong"; // No I18N
@@ -109,6 +114,14 @@
 					{
 					  $("#result").empty();
 					});
+				 $("#new1").click(function()
+							{
+							  $("#result").empty();
+							});
+				 $("#new2").click(function()
+							{
+							  $("#result").empty();
+							});
 				}
 				}
 			}); 
@@ -117,16 +130,5 @@
 			
 	
 </script>
-
-</head>
-<body>
-<%
-CoinOperation coin = CreateInstance.COINOPERATION.getCoinInstance();
-
-int id = (int)session.getAttribute("user_id");
-
-String old =coin.getPassword(id);
-
-%>
 </body>
 </html>

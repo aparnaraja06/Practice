@@ -20,7 +20,8 @@
 <%
 CoinOperation coin = CreateInstance.COINOPERATION.getCoinInstance();
 
-String role = (String)session.getAttribute("Role");
+String typeName = request.getParameter("type");
+
 %>
 <div id="coin">
 <h2>Z COIN</h2>
@@ -30,14 +31,14 @@ String role = (String)session.getAttribute("Role");
 <p id="result"></p>
 <%
 
-if(role.equals("admin"))
+if(typeName.equals("details"))
 {
 %>
 <h1>USER DETAILS</h1>
 <table class="center">
 <tr>
-<th>NAME</th>
 <th>MAIL</th>
+<th>NAME</th>
 <th>MOBILE</th>
 <th>HUMAN_ID</th>
 <th>RC AMOUNT</th>
@@ -48,21 +49,29 @@ if(role.equals("admin"))
 
 List<User> list = coin.showWaitingList();
 
+if(list.isEmpty())
+{
+%>
+<tr><td colspan="5" class="record"><b>*** No records found ***</b></td></tr>
+<%
+}
+else
+{
 for(int i=0;i<list.size();i++)
 {
 	User user=list.get(i);
 %>
 <tr>
-<td><%=user.getName() %></td>
 <td id="mail"><%=user.getMail()%></td>
+<td><%=user.getName() %></td>
 <td><%=user.getMobile()%></td>
 <td><%=user.getHuman_id()%></td>
 <td><%=user.getRc_amount()%></td>
-<td id="role"><%=user.getRole() %></td>
-<td><br><br><a href="#" class="add" onClick="userLogin()">ADD USER</a><br><br>
-<a href="#" class="add" onClick="adminLogin()">ADD ADMIN</a><br><br></td>
+<td><%=user.getRole() %></td>
+<td><br><br><input type="button" class="add" onClick="userLogin('mail')" value="ADD USER"><br><br>
+<input type="button" class="add" onClick="adminLogin('mail')"value="ADD ADMIN"><br><br></td>
 </tr>
-<%} %>
+<%} }%>
 </table>
 <%
 }
@@ -80,6 +89,7 @@ else
 int id = (int)session.getAttribute("user_id");
 
 Account account=coin.accountDetails(id);
+
 %>
 <tr>
 <td><%=account.getAccount_num()%></td>
@@ -90,18 +100,22 @@ Account account=coin.accountDetails(id);
 </table>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
-	function userLogin()
+	function userLogin(mail_id)
 	{
 		
-		var mail = $("#mail").val();
-		var role = $("#role").val();
+		var mail = document.getElementById(mail_id);
 		
+		var id = mail.innerHTML;
+		
+		var role = "user";
+		
+		//alert("mail : "+id);
 		
        $.ajax({
 			
 			type : 'POST',
 			url: 'add',
-			data :{mail : mail,role : role},
+			data :{id : id,role : role},
 			success:function(result)
 			{
 				if(result=="Invalid username") 
@@ -115,8 +129,80 @@ Account account=coin.accountDetails(id);
 				{
 					 $("#result").empty();
 					 
-					var successUrl = "Details.jsp";
-				    window.location.href = successUrl;
+					 $('#result').append("Successfully added!");
+				}
+				
+			},
+			 error: function(xhr)
+				{
+
+					try
+					{
+					if(xhr.status==401)
+					{
+						throw "Oops! Connection failed! "; // No I18N
+					}
+					
+					else if(xhr.status==402)
+					{
+						throw "Error! couldn't close Connection! "; // No I18N
+					}
+					else if(xhr.status==403)
+					{
+						throw "Username should not be empty!"; // No I18N
+					}
+					else if(xhr.status==404)
+					{
+						throw "Password should not be empty!";  // No I18N
+					}
+					else
+					{
+						throw "Error! Something went wrong"; // No I18N
+					}
+					}
+					catch(err)
+					{
+					$("#result").empty();
+					  
+			        
+					 $('#result').append(err);
+					 	 
+					 
+					}
+					}
+				}); 
+				
+		}
+	function adminLogin(mail_id)
+	{
+		
+		var mail = document.getElementById(mail_id);
+		
+		var id = mail.innerHTML;
+		
+		var role = "admin";
+		
+		//alert("mail : "+id);
+		
+       $.ajax({
+			
+			type : 'POST',
+			url: 'add',
+			data :{id : id,role : role},
+			success:function(result)
+			{
+				if(result=="Invalid username") 
+				{
+					 $("#result").empty();
+					 
+				 $('#result').append(result);
+				 				  
+				}
+				else
+				{
+					 $("#result").empty();
+					 
+					 $('#result').append("Successfully added!");
 				}
 				
 			},

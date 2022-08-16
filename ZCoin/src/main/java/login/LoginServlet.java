@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import checker.Checker;
 import custom.CustomException;
 import instance.CreateInstance;
 import operation.CoinOperation;
@@ -47,6 +48,10 @@ public class LoginServlet extends HttpServlet {
 				//CoinOperation coin=(CoinOperation)request.getServletContext().getAttribute("Instance");
 				
 				CoinOperation coin = CreateInstance.COINOPERATION.getCoinInstance();
+				
+				Checker check = CreateInstance.COINOPERATION.getCheckInstance();
+				
+				check.checkName(name);
 				
 				int id=coin.getId(name);
 				

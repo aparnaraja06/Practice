@@ -8,13 +8,11 @@
 <link rel="stylesheet" href="Manage.css">
 </head>
 <body>
-<%
-String typeName=(String)request.getParameter("type");
-%>
 <jsp:include page='Menu.jsp'>
 <jsp:param name="TRANSFER" value=" " />
 </jsp:include>
-<% 
+<%
+String typeName=(String)request.getParameter("type");
 if(typeName.equals("withdraw"))  
 {
 %>
@@ -26,8 +24,9 @@ if(typeName.equals("withdraw"))
 <input type="button" id="loginbtn" value="SUBMIT" onclick="withdraw()"><br><br>
 </div>
 <%}
-else
-{%>
+else if(typeName.equals("deposit"))
+{
+%>
 <p id="result"></p>
 <div class="container">
 <h1>DEPOSIT RC</h1><br><br>
@@ -35,17 +34,33 @@ else
 <input type="text" placeholder="Amount" name="amount" id="amount" required><br><br>
 <input type="button" id="loginbtn" value="SUBMIT" onclick="deposit()"><br><br>
 </div>
+<%}
+else
+{
+%>
+<p id="result"></p>
+<div class="container">
+<h1>TRANSFER ZC</h1>
+<label><b>ENTER ACCOUNT NUMBER</b></label>
+<input type="text" placeholder="Account Number" name="account" id="account1" required><br>
+<label><b>RE ENTER ACCOUNT NUMBER</b></label>
+<input type="text" placeholder="Account Number" name="account" id="account2" required><br>
+<label><b>ENTER AMOUNT</b></label>
+<input type="text" placeholder="Amount" name="amount" id="amount" required>
+<br><br><input type="button" id="loginbtn" value="SUBMIT" onclick="transfer()">
+</div>
 <%}%>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
+
 	function withdraw()
 	{
-			  
+			alert("Withdraw");  
 		var name=$('#amount').val();
 		
           var type="withdraw";
 		
-		//alert(type);
+		alert(type);
 		
 		$.ajax({
 			
@@ -98,6 +113,18 @@ else
 				else if(xhr.status==404)
 				{
 					throw "Password should not be empty!";  // No I18N
+				}
+				else if(xhr.status==409)
+				{
+					throw "Invalid input";  // No I18N
+				}
+				else if(xhr.status==408)
+				{
+					throw "Invalid input type in amount";  // No I18N
+				}
+				else if(xhr.status==410)
+				{
+					throw "Your balance is less than amount entered";  // No I18N
 				}
 				else
 				{
@@ -181,6 +208,14 @@ else
 				{
 					throw "Password should not be empty!";  // No I18N
 				}
+				else if(xhr.status==409)
+				{
+					throw "Invalid input";  // No I18N
+				}
+				else if(xhr.status==408)
+				{
+					throw "Invalid input type in amount";  // No I18N
+				}
 				else
 				{
 					throw "Error! Something went wrong"; // No I18N
@@ -200,6 +235,97 @@ else
 					});
 				}
 				}
+			}); 
+			
+	}
+	function transfer()
+	{
+
+		var account1=$('#account1').val();
+		
+		var account2=$('#account2').val();
+		
+		var amount=$('#amount').val()
+		
+		var type="transfer";
+		
+		
+		$.ajax({
+			
+			type : 'POST',
+			url: 'transaction',
+			data :{account1 : account1, account2 : account2, amount : amount, type : type},
+			success:function(result)
+			{
+				
+				if(result=="error") 
+				{
+					 $("#result").empty();
+					 
+				 $('#result').append("Error! Request failed");
+				 
+				 $("#amount").click(function(){
+					  $("#result").empty();
+					});
+				  
+				}
+				else
+				{
+					$("#result").empty();
+					 
+					 $('#result').append("Successfully transferred");
+					
+				}
+				
+			},
+			    
+			
+			 error: function(xhr)
+			{
+				// alert("Xhr : "+xhr.status);
+
+				try
+				{
+				
+				if(xhr.status==409)
+				{
+					throw "Invalid Account number";  // No I18N
+				}
+				else if(xhr.status==408)
+				{
+					throw "Invalid input type in amount";  // No I18N
+				}
+				else if(xhr.status==410)
+				{
+					throw "Your balance is less than amount entered";  // No I18N
+				}
+				else
+				{
+					throw "Error! Something went wrong"; // No I18N
+				}
+				}
+				catch(err)
+				{
+				$("#result").empty();
+				  
+		        
+				 $('#result').append(err);
+				 	 
+				 
+				 $("#amount").click(function()
+					{
+					  $("#result").empty();
+					});
+				 $("#account1").click(function()
+							{
+							  $("#result").empty();
+							});
+				 $("#account2").click(function()
+							{
+							  $("#result").empty();
+							});
+				}
+			}
 			}); 
 			
 	}

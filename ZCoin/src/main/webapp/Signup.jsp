@@ -14,10 +14,9 @@
 <%
 CoinOperation coin = CreateInstance.COINOPERATION.getCoinInstance();
 
-int id = (int)session.getAttribute("user_id");
+String typeName = (String)request.getParameter("type");
 
-
-if(id==0 || coin==null)
+if(typeName.equals("signup"))
 {
 %>
 <div class="total">
@@ -41,6 +40,37 @@ if(id==0 || coin==null)
 </form>
 </div>
 </div>
+<%}
+else
+{
+	int id = (int)session.getAttribute("user_id");
+	
+	
+	User user = coin.getUser(id);
+
+%>		
+<jsp:include page='Menu.jsp'>
+<jsp:param name="TRANSFER" value=" " />
+</jsp:include>
+<div class="total">
+<div class="container">
+<form id="login_form">
+<h2>PROFILE</h2><br>
+<p id="msg"></p>
+<label>NAME</label><br>
+<input type="text" id="name" value=<%=user.getName()%>><br>
+<label>MAIL ID</label><br>
+<input type="text" id="mail" value=<%=user.getMail()%>><br>
+<label>MOBILE NUMBER</label><br>
+<input type="text"  id="mobile" value=<%=user.getMobile()%>><br>
+<label>HUMAN ID</label><br>
+<input type="text" id="human_id" value=<%=user.getHuman_id()%>><br>
+<label>AMOUNT</label><br>
+<input type="text" id="amount" value=<%=user.getRc_amount()%>>
+</form>
+</div>
+</div>
+<%} %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
 
@@ -130,33 +160,5 @@ if(id==0 || coin==null)
 				}); 
 		}
 </script>	
-<%}
-else
-{
-	User user = coin.getUser(id);
-
-%>		
-<jsp:include page='Menu.jsp'>
-<jsp:param name="TRANSFER" value=" " />
-</jsp:include>
-<div class="total">
-<div class="container">
-<form id="login_form">
-<h2>PROFILE</h2><br>
-<p id="msg"></p>
-<label>NAME</label><br>
-<input type="text" id="name" value=<%=user.getName()%>><br>
-<label>MAIL ID</label><br>
-<input type="text" id="mail" value=<%=user.getMail()%>><br>
-<label>MOBILE NUMBER</label><br>
-<input type="text"  id="mobile" value=<%=user.getMobile()%>><br>
-<label>HUMAN ID</label><br>
-<input type="text" id="human_id" value=<%=user.getHuman_id()%>><br>
-<label>AMOUNT</label><br>
-<input type="text" id="amount" value=<%=user.getRc_amount()%>>
-<%} %>
-</form>
-</div>
-</div>
 </body>
 </html>

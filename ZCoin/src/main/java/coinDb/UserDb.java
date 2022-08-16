@@ -188,6 +188,7 @@ public class UserDb
 	{
 		int id = user.getUser_id();
 		
+		
 		String query = "UPDATE user SET approved=true WHERE user_id=?";
 		
 		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection().prepareStatement(query))

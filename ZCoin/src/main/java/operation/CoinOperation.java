@@ -1,10 +1,12 @@
 package operation;
 
 import java.util.List;
+import java.util.Map;
 
 import account.Account;
 import coinDb.CoinDb;
 import custom.CustomException;
+import transaction.Transaction;
 import user.User;
 
 public class CoinOperation 
@@ -110,6 +112,25 @@ public class CoinOperation
 	{
 		return coin.depositRc(acc_num, amount);
 	}
-	
+	public boolean buyZCoin(int acc_num, double amount)throws CustomException
+	{
+		return coin.buyZCoin(acc_num, amount);
+	}
+	public boolean transferZCoin(int from_account, int to_account, double amount)throws CustomException
+	{
+		return coin.transferZCoin(from_account, to_account, amount);
+	}
+	public void addTransaction(Transaction transfer)throws CustomException
+	{
+		coin.addTransaction(transfer);
+	}
+	public Map<Integer,List<Transaction>> getAllHistory()throws CustomException
+	{
+		return coin.getAllHistory();
+	}
+	public List<Transaction> getHistoryByUserId(int user_id)throws CustomException
+	{
+		return coin.getHistoryByUserId(user_id);
+	}
 	
 }

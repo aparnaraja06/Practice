@@ -27,7 +27,7 @@
 </form>
 </div>
 <div class="signup">
-Don't have an account?<a href="Signup.jsp" class="sign">Sign up now</a>
+Don't have an account?<a href="Signup.jsp?type=signup" class="sign">Sign up now</a>
 </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

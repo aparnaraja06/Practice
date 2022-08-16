@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import checker.Checker;
 import custom.CustomException;
 import instance.CreateInstance;
 import operation.CoinOperation;
@@ -24,37 +25,59 @@ public class ManageServlet extends HttpServlet {
 		
 		 response.setContentType("text/html");
 		 
-			
-			PrintWriter out=response.getWriter();
+		 HttpSession session = request.getSession();
 			
 			String name =  request.getParameter("name");
 			
+			String msg = "error";
+			
 			try
 			{
-				double amount = Double.parseDouble(name);
+				
 				
 				CoinOperation coin = CreateInstance.COINOPERATION.getCoinInstance();
 				
+				Checker check = CreateInstance.COINOPERATION.getCheckInstance();
+				
+				String type = request.getParameter("type");
+				
+				check.validateAmount(name);
+				
+				double amount = Double.parseDouble(name);
+				
+				if(type.equals("set"))
+				{
+				
 				double amountt=coin.changeZCoinRate(amount);
 				
-				HttpSession session = request.getSession();
-				
-				String msg = "error";
 				
 				if(amount!=amountt)
 				{
                    session.setAttribute("Error", msg);
 					
-					out.print(msg);
 
+				}
+				}
+				else
+				{
+					int id = (int)session.getAttribute("user_id");
+					
+					int acc_num = coin.getAccountNumById(id);
+					
+					boolean result = coin.buyZCoin(acc_num, amount);
+					
+					if(!result)
+					{
+						 session.setAttribute("Error", msg);
+					}
 				}
 			}
 			catch(CustomException e)
 			{
 				
-				String msg=e.getMessage();
+				String err_msg=e.getMessage();
 				
-				ErrorMsg err = ErrorMsg.valueOf(msg);
+				ErrorMsg err = ErrorMsg.valueOf(err_msg);
 				
 				int code = err.getCode();
 				

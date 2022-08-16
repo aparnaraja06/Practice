@@ -51,7 +51,7 @@
 				}
 				else
 				{
-					var successUrl = "Details.jsp";
+					var successUrl = "Details.jsp?type=details";
 				    window.location.href = successUrl;
 				}
 				

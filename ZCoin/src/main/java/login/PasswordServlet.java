@@ -47,9 +47,8 @@ response.setContentType("text/html");
 		{
 			CoinOperation coin = CreateInstance.COINOPERATION.getCoinInstance();
 			
-			String role = coin.getRole(user_id);
+			Checker check = CreateInstance.COINOPERATION.getCheckInstance();
 			
-			Checker check = new Checker();
 			check.checkPassword(pass1);
 			
 			String pass2=coin.getPassword(user_id);
@@ -69,6 +68,8 @@ response.setContentType("text/html");
 			}
 			else
 			{
+				String role = coin.getRole(user_id);
+				
 				request.setAttribute("Role",role);
 				
 				session.setAttribute("Role", role);

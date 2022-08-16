@@ -11,9 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import checker.Checker;
 import custom.CustomException;
 import instance.CreateInstance;
 import operation.CoinOperation;
+import user.User;
 import validate.ErrorMsg;
 
 
@@ -31,26 +33,43 @@ public class ChangePassword extends HttpServlet {
 		
          response.setContentType("text/html"); // No I18N
 		
+         PrintWriter out=response.getWriter();
 		
 		String old=request.getParameter("old");
 				
 		HttpSession session=request.getSession();
 		int user_id=(int)session.getAttribute("user_id");
 		
-		
-		
-		
 		try
 		{
 			CoinOperation coin = CreateInstance.COINOPERATION.getCoinInstance();
 			
+			Checker check = CreateInstance.COINOPERATION.getCheckInstance();
+			
 			String pass = coin.getPassword(user_id);
+			
+			User user = coin.getUser(user_id);
+			
+			String name = user.getName();
+			long mobile = user.getMobile();
+			String mail = user.getMail();
+			
+			check.checkPassword(old);
+			String invalid = "Incorrect password";
 			
 			if(pass.equals(old))
 			{
 				String new1 = request.getParameter("new1");
 				
 				String new2 = request.getParameter("new2");
+				
+				check.checkPassword(new1);
+				check.validatePassword(new1,name,mobile,mail);
+				check.checkPassword(new2);
+				check.validatePassword(new2,name,mobile,mail);
+				
+				String msg = "Password doesn't match";
+				
 				
 				if(new1.equals(new2))
 				{
@@ -59,12 +78,16 @@ public class ChangePassword extends HttpServlet {
 				}
 				else
 				{
-					session.setAttribute("Error","Password doesn't match");
+					session.setAttribute("Error",msg);
+					
+					out.print(msg);
 				}
 			}
 			else
 			{
-				session.setAttribute("Error", "Incorrect password");
+				session.setAttribute("Error", invalid);
+				
+				out.print(invalid);
 			}
 		}
 		catch(CustomException e)

@@ -11,25 +11,46 @@
 <jsp:include page='Menu.jsp'>
 <jsp:param name="TRANSFER" value=" " />
 </jsp:include>
+<%
+String typeName = request.getParameter("type");
+
+if(typeName.equals("set"))
+{
+%>
 <p id="result"></p>
 <div class="container">
 <h1>SET Z COIN RATE</h1><br><br>
 <h2>ENTER AMOUNT</h2>
 <input type="text" placeholder="Amount" name="amount" id="amount" required><br><br>
-<input type="button" id="loginbtn" value="SUBMIT" onclick="manage()"><br><br>
+<input type="button" id="loginbtn" value="SUBMIT" onclick="set()"><br><br>
 </div>
+<%}
+
+else
+{
+%>
+<p id="result"></p>
+<div class="container">
+<h1>BUY Z COIN</h1><br><br>
+<h2>ENTER AMOUNT</h2>
+<input type="text" placeholder="Amount" name="amount" id="amount" required><br><br>
+<input type="button" id="loginbtn" value="SUBMIT" onclick="buy()"><br><br>
+</div>
+<%}%>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
-	function manage()
+	function set()
 	{
 			  
 		var name=$('#amount').val();
+		
+		var type="set";
 		
 		$.ajax({
 			
 			type : 'POST',
 			url: 'manage',
-			data :{name : name},
+			data :{name : name, type : type},
 			success:function(result)
 			{
 				
@@ -75,6 +96,14 @@
 				{
 					throw "Password should not be empty!";  // No I18N
 				}
+				else if(xhr.status==409)
+				{
+					throw "Invalid input";  // No I18N
+				}
+				else if(xhr.status==408)
+				{
+					throw "Invalid input type in amount";  // No I18N
+				}
 				else
 				{
 					throw "Error! Something went wrong"; // No I18N
@@ -96,6 +125,92 @@
 				}
 			}); 
 			
+	}
+	
+	function buy()
+	{
+         var name=$('#amount').val();
+         
+         var type = "buy";
+		
+		$.ajax({
+			
+			type : 'POST',
+			url: 'manage',
+			data :{name : name, type : type},
+			success:function(result)
+			{
+				
+				if(result=="error") 
+				{
+					 $("#result").empty();
+					 
+				 $('#result').append("Error! unable to Buy");
+				 
+				 $("#amount").click(function(){
+					  $("#result").empty();
+					});
+				  
+				}
+				else
+				{
+					$('#result').append("Successfully Bought");
+					
+				}
+				
+			},
+			    
+			
+			 error: function(xhr)
+			{
+
+				try
+				{
+				if(xhr.status==401)
+				{
+					throw "Oops! Connection failed! "; // No I18N
+				}
+				
+				else if(xhr.status==402)
+				{
+					throw "Error! couldn't close Connection! "; // No I18N
+				}
+				else if(xhr.status==403)
+				{
+					throw "Username should not be empty!"; // No I18N
+				}
+				else if(xhr.status==404)
+				{
+					throw "Password should not be empty!";  // No I18N
+				}
+				else if(xhr.status==409)
+				{
+					throw "Invalid input";  // No I18N
+				}
+				else if(xhr.status==408)
+				{
+					throw "Invalid input type in amount";  // No I18N
+				}
+				else
+				{
+					throw "Error! Something went wrong"; // No I18N
+				}
+				}
+				catch(err)
+				{
+				$("#result").empty();
+				  
+		        
+				 $('#result').append(err);
+				 	 
+				 
+				 $("#amount").click(function()
+					{
+					  $("#result").empty();
+					});
+				}
+				}
+			}); 
 	}
 </script>	
 </body>

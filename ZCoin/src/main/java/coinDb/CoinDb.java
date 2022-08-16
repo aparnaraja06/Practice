@@ -3,9 +3,11 @@ package coinDb;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import account.Account;
 import custom.CustomException;
+import transaction.Transaction;
 import user.User;
 
 public class CoinDb 
@@ -125,6 +127,31 @@ public class CoinDb
 	public boolean depositRc(int acc_num, double amount)throws CustomException
 	{
 		return accountObj.depositRc(acc_num, amount);
+	}
+	
+	public boolean buyZCoin(int acc_num, double amount)throws CustomException
+	{
+		return accountObj.buyZCoin(acc_num, amount);
+	}
+	
+	public boolean transferZCoin(int from_account, int to_account, double amount)throws CustomException
+	{
+		return accountObj.transferZCoin(from_account, to_account, amount);
+	}
+	
+	public void addTransaction(Transaction transfer)throws CustomException
+	{
+		transactionObj.addTransaction(transfer);
+	}
+	
+	public Map<Integer,List<Transaction>> getAllHistory()throws CustomException
+	{
+		return transactionObj.getAllHistory();
+	}
+	
+	public List<Transaction> getHistoryByUserId(int user_id)throws CustomException
+	{
+		return transactionObj.getHistoryByUserId(user_id);
 	}
 	
 	

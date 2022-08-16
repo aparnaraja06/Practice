@@ -6,7 +6,11 @@ public enum ErrorMsg
 	  CLOSE_CONNECTION(402),
 	  USERNAME(403),
 	  PASSWORD(404),
-	  MAIL(405);
+	  MAIL(405),
+	  ALPHABETS(406),
+	  NUMBER(409),
+	  AMOUNT(408),
+	  WITHDRAW(410);
 	  
 	  private final int code;
 	  

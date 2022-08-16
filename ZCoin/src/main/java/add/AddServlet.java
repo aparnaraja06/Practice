@@ -35,8 +35,9 @@ public class AddServlet extends HttpServlet {
 			
 			String role =  request.getParameter("role");
 			
-			String mail = request.getParameter("mail");
+			String mail = request.getParameter("id");
 			
+			  PrintWriter out=response.getWriter();
 			
 			try
 			{
@@ -45,6 +46,8 @@ public class AddServlet extends HttpServlet {
 				int user_id=coin.getId(mail);
 				
 				User user = coin.getUser(user_id);
+				
+				user.setUser_id(user_id);
 				
 				String msg="Something went wrong";
 
@@ -57,16 +60,22 @@ public class AddServlet extends HttpServlet {
 					
 					session.setAttribute("user_id", user_id);
 					
+					out.print(user_id);
+					
 				}
 				else if(role.equals("admin"))
 				{
 					coin.approveAsAdmin(user);
 					
 					session.setAttribute("user_id", user_id);
+					
+					out.print(user_id);
 				}
 				else
 				{
 					session.setAttribute("Error", msg);
+					
+					out.print(msg);
 				}
 			}
 			catch(CustomException e)

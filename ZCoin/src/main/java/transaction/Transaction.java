@@ -8,6 +8,14 @@ public class Transaction
 	private int to_account;
 	private String type;
 	private double amount;
+	private String date;
+	
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
 	public int getUser_id() {
 		return user_id;
 	}
@@ -41,7 +49,7 @@ public class Transaction
 	@Override
 	public String toString() {
 		return "user_id : " + user_id + ", from_account : " + from_account + ", to_account : " + to_account
-				+ ", type : " + type + ", amount : " + amount;
+				+ ", type : " + type + ", amount : " + amount+", date : "+ date;
 	}
 	
 	
