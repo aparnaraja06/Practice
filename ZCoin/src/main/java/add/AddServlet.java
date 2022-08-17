@@ -58,6 +58,8 @@ public class AddServlet extends HttpServlet {
 					
 					coin.approveAsUser(user);
 					
+					coin.addAccount(user);
+					
 					session.setAttribute("user_id", user_id);
 					
 					out.print(user_id);
@@ -66,6 +68,8 @@ public class AddServlet extends HttpServlet {
 				else if(role.equals("admin"))
 				{
 					coin.approveAsAdmin(user);
+					
+					coin.addAccount(user);
 					
 					session.setAttribute("user_id", user_id);
 					

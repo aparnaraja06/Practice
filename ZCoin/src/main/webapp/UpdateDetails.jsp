@@ -75,16 +75,7 @@
 
 				try
 				{
-				if(xhr.status==401)
-				{
-					throw "Oops! Connection failed! "; // No I18N
-				}
-				
-				else if(xhr.status==402)
-				{
-					throw "Error! couldn't close Connection! "; // No I18N
-				}
-				else if(xhr.status==403)
+				 if(xhr.status==403)
 				{
 					throw "Username should not be empty!"; // No I18N
 				}

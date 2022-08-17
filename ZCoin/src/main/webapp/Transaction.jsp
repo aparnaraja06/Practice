@@ -55,12 +55,11 @@ else
 
 	function withdraw()
 	{
-			alert("Withdraw");  
+			
 		var name=$('#amount').val();
 		
           var type="withdraw";
 		
-		alert(type);
 		
 		$.ajax({
 			
@@ -97,34 +96,21 @@ else
 
 				try
 				{
-				if(xhr.status==401)
+				if(xhr.status==414)
 				{
-					throw "Oops! Connection failed! "; // No I18N
-				}
-				
-				else if(xhr.status==402)
-				{
-					throw "Error! couldn't close Connection! "; // No I18N
-				}
-				else if(xhr.status==403)
-				{
-					throw "Username should not be empty!"; // No I18N
-				}
-				else if(xhr.status==404)
-				{
-					throw "Password should not be empty!";  // No I18N
-				}
-				else if(xhr.status==409)
-				{
-					throw "Invalid input";  // No I18N
+					throw "Invalid input type";  // No I18N
 				}
 				else if(xhr.status==408)
 				{
 					throw "Invalid input type in amount";  // No I18N
 				}
-				else if(xhr.status==410)
+				else if(xhr.status==409)
 				{
 					throw "Your balance is less than amount entered";  // No I18N
+				}
+				else if(xhr.status==413)
+				{
+					throw "Input should not be empty";
 				}
 				else
 				{
@@ -191,30 +177,17 @@ else
 
 				try
 				{
-				if(xhr.status==401)
-				{
-					throw "Oops! Connection failed! "; // No I18N
-				}
-				
-				else if(xhr.status==402)
-				{
-					throw "Error! couldn't close Connection! "; // No I18N
-				}
-				else if(xhr.status==403)
-				{
-					throw "Username should not be empty!"; // No I18N
-				}
-				else if(xhr.status==404)
-				{
-					throw "Password should not be empty!";  // No I18N
-				}
-				else if(xhr.status==409)
+				 if(xhr.status==414)
 				{
 					throw "Invalid input";  // No I18N
 				}
 				else if(xhr.status==408)
 				{
 					throw "Invalid input type in amount";  // No I18N
+				}
+				else if(xhr.status==413)
+				{
+					throw "Input should not be empty";
 				}
 				else
 				{
@@ -282,12 +255,12 @@ else
 			
 			 error: function(xhr)
 			{
-				// alert("Xhr : "+xhr.status);
+				 alert("Xhr : "+xhr.status);
 
 				try
 				{
 				
-				if(xhr.status==409)
+				if(xhr.status==414)
 				{
 					throw "Invalid Account number";  // No I18N
 				}
@@ -295,9 +268,13 @@ else
 				{
 					throw "Invalid input type in amount";  // No I18N
 				}
-				else if(xhr.status==410)
+				else if(xhr.status==409)
 				{
 					throw "Your balance is less than amount entered";  // No I18N
+				}
+				else if(xhr.status==413)
+				{
+					throw "Input should not be empty";
 				}
 				else
 				{
@@ -309,7 +286,7 @@ else
 				$("#result").empty();
 				  
 		        
-				 $('#result').append(err);
+				 $("#result").append(err);
 				 	 
 				 
 				 $("#amount").click(function()

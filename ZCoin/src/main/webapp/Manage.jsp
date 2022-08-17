@@ -79,30 +79,18 @@ else
 
 				try
 				{
-				if(xhr.status==401)
-				{
-					throw "Oops! Connection failed! "; // No I18N
-				}
 				
-				else if(xhr.status==402)
+				if(xhr.status==414)
 				{
-					throw "Error! couldn't close Connection! "; // No I18N
-				}
-				else if(xhr.status==403)
-				{
-					throw "Username should not be empty!"; // No I18N
-				}
-				else if(xhr.status==404)
-				{
-					throw "Password should not be empty!";  // No I18N
-				}
-				else if(xhr.status==409)
-				{
-					throw "Invalid input";  // No I18N
+					throw "Invalid input type";  // No I18N
 				}
 				else if(xhr.status==408)
 				{
 					throw "Invalid input type in amount";  // No I18N
+				}
+				else if(xhr.status==413)
+				{
+					throw "Input should not be empty";
 				}
 				else
 				{
@@ -166,30 +154,18 @@ else
 
 				try
 				{
-				if(xhr.status==401)
-				{
-					throw "Oops! Connection failed! "; // No I18N
-				}
 				
-				else if(xhr.status==402)
+				if(xhr.status==414)
 				{
-					throw "Error! couldn't close Connection! "; // No I18N
-				}
-				else if(xhr.status==403)
-				{
-					throw "Username should not be empty!"; // No I18N
-				}
-				else if(xhr.status==404)
-				{
-					throw "Password should not be empty!";  // No I18N
-				}
-				else if(xhr.status==409)
-				{
-					throw "Invalid input";  // No I18N
+					throw "Invalid input type";  // No I18N
 				}
 				else if(xhr.status==408)
 				{
 					throw "Invalid input type in amount";  // No I18N
+				}
+				else if(xhr.status==413)
+				{
+					throw "Input should not be empty";
 				}
 				else
 				{

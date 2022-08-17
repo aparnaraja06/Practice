@@ -77,6 +77,7 @@ public class MailDb {
 		}
 		catch(CustomException e)
 		{
+			System.out.println("In mail db");
 			throw new CustomException(e.getMessage());
 		}
 		catch (Exception e) {
@@ -116,6 +117,41 @@ public class MailDb {
 		}
 
 		
+	}
+	
+	public boolean checkMailExists(String mail)throws CustomException
+	{
+		String query = "SELECT mail_id FROM mail WHERE mail_id=?";
+		
+		String mail_id=null;
+		boolean check=true;
+		
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+				PreparedStatement.RETURN_GENERATED_KEYS)) 
+		{
+			statement.setString(1, mail);
+			
+			try (ResultSet result = statement.executeQuery()) 
+			{
+				while (result.next()) 
+				{
+					mail_id = result.getString("mail_id");
+					
+					if(!mail_id.equals(mail))
+					{
+						throw new CustomException("MAIL");
+					}
+				}
+				return check;
+			}
+		}
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
+			throw new CustomException("MAIL");
+		}
 	}
 	
 

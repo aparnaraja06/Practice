@@ -24,32 +24,35 @@ public class AccountDb {
 			throw new CustomException(e.getMessage());
 		}
 		catch (Exception e) {
+			
 			throw new CustomException("Unable to create Account Table");
 		}
 	}
 	
 	public int addAccount(User user)throws CustomException
 	{
-		String query = "INSERT INTO account(user_id,rc_amount) values(?,?)";
+		String query = "INSERT INTO account(user_id,rc_amount) VALUES(?,?)";
 		
 		int acc_num=0;
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
-			int id = user.getUser_id();
+			int user_id = user.getUser_id();
+			
 			double amount = user.getRc_amount();
 			
-			statement.setInt(1, id);
+			statement.setInt(1, user_id);
 			statement.setDouble(2, amount);
 			
-              statement.executeUpdate();
+             statement.executeUpdate();
 			
 			try (ResultSet result = statement.getGeneratedKeys()) 
 			{
 				if (result.next()) 
 				{
-					acc_num=result.getInt("account_num");
+					acc_num=result.getInt(1);
+					
 				}
 				
 				return acc_num;
@@ -60,7 +63,9 @@ public class AccountDb {
 			throw new CustomException(e.getMessage());
 		}
 		catch (Exception e) {
-			throw new CustomException("Unable to create Account Table");
+			
+			System.out.println(e.getMessage());
+			throw new CustomException("Unable to add Account");
 		}
 			
 	}
@@ -362,6 +367,30 @@ public class AccountDb {
 				throw new CustomException("Unable to Transfer");
 			}
 	}
+	
+	public void changeZcAmount(double times)throws CustomException
+	{
+		String query = "UPDATE account SET zc_amount=zc_amount * ? WHERE zc_amount > 0";
+		
+		
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+				PreparedStatement.RETURN_GENERATED_KEYS)) 
+		{
+			statement.setDouble(1, times);
+			
+			statement.executeUpdate();
+		}
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
+			throw new CustomException("Unable to Update amount");
+		}
+	}
+	
+
+		
 
 
 }

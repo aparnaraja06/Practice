@@ -49,9 +49,14 @@
 						  $("#result").empty();
 						}); 
 				}
-				else
+				else if(result=="admin")
 				{
 					var successUrl = "Details.jsp?type=details";
+				    window.location.href = successUrl;
+				}
+				else
+				{
+					var successUrl = "Details.jsp?type=account";
 				    window.location.href = successUrl;
 				}
 				

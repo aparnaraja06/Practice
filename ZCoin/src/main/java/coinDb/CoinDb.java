@@ -87,11 +87,29 @@ public class CoinDb
 		return zCoin;
 	}
 	
-	public double changeZCoinRate(double amount)
+	public double changeZCoinRate(double amount)throws CustomException
 	{
+		double old = zCoin;
+		
 		zCoin=amount;
 		
+		double times = getDifference(old,zCoin);
+		
+		changeZcAmount(times);
+		
 		return zCoin;
+	}
+	
+	public double getDifference(double old_value,double new_value)
+	{
+		double change = new_value/old_value;
+		
+		return change;
+	}
+	
+	public void changeZcAmount(double times)throws CustomException
+	{
+		accountObj.changeZcAmount( times);
 	}
 	
 	public String getDate()
@@ -152,6 +170,11 @@ public class CoinDb
 	public List<Transaction> getHistoryByUserId(int user_id)throws CustomException
 	{
 		return transactionObj.getHistoryByUserId(user_id);
+	}
+	
+	public boolean checkMailExists(String mail)throws CustomException
+	{
+		return mailObj.checkMailExists(mail);
 	}
 	
 	

@@ -101,7 +101,7 @@ public class TransactionServlet extends HttpServlet {
 			transfer.setFrom_account(acc_num);
 			transfer.setTo_account(acc_num2);
 			transfer.setAmount(get_amount);
-			transfer.setType("Withdrawn");
+			transfer.setType("Transferred");
 			transfer.setUser_id(id);
 			
 			String date = coin.getDate();
@@ -120,11 +120,9 @@ public class TransactionServlet extends HttpServlet {
 		
 		String msg=e.getMessage();
 		
-		
 		ErrorMsg err = ErrorMsg.valueOf(msg);
 		
 		int code = err.getCode();
-		
 		
 		response.sendError(code);
 		

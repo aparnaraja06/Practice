@@ -14,7 +14,7 @@
 <%
 CoinOperation coin = CreateInstance.COINOPERATION.getCoinInstance();
 
-String typeName = (String)request.getParameter("type");
+String typeName = request.getParameter("type");
 
 if(typeName.equals("signup"))
 {
@@ -40,7 +40,8 @@ if(typeName.equals("signup"))
 </form>
 </div>
 </div>
-<%}
+<%
+}
 else
 {
 	int id = (int)session.getAttribute("user_id");
@@ -76,6 +77,7 @@ else
 
 		function signup()
 		{
+	
 			var name=$('#name').val();
 			var mail=$('#mail').val();
 			var mobile=$('#mobile').val();
@@ -87,11 +89,12 @@ else
 				
 				type : 'POST',
 				url: 'signUp',
-				data :{name : name, mail : mail,mobile : mobile,human_id : human_id,
-					password : password,amount :amount},
+				data :{name : name, mail : mail,mobile : mobile, human_id : human_id,
+					password : password, amount : amount},
 					
 				success:function(result)
 				{
+		
 					if(result=="User already exists") 
 					{
 						 $("#msg").empty();
@@ -114,7 +117,7 @@ else
 				
 				error: function(xhr)
 				{
-
+        
 					try
 					{
 					if(xhr.status==401)
@@ -126,17 +129,38 @@ else
 					{
 						throw "Error! couldn't close Connection! "; // No I18N
 					}
+					
 					else if(xhr.status==403)
 					{
-						throw "Username should not be empty!"; // No I18N
+						throw "Username should not be empty"; // No I18N
 					}
 					else if(xhr.status==404)
 					{
-						throw "Password should not be empty!";  // No I18N
+						throw "Password should not be empty"; // No I18N
 					}
 					else if(xhr.status==405)
 					{
 						throw "Mail id already exists"; // No I18N
+					}
+					else if(xhr.status==406)
+					{
+						throw "Password should contain 8 characters"; // No I18N
+					}
+					else if(xhr.status==408)
+					{
+						throw "Invalid type in amount"; // No I18N
+					}
+					else if(xhr.status==410)
+					{
+						throw "Invalid mail id"; // No I18N
+					}
+					else if(xhr.status==411)
+					{
+						throw "Invalid Human Id"; // No I18N
+					}
+					else if(xhr.status==412)
+					{
+						throw "Invalid mobile number"; // No I18N
 					}
 					else
 					{
@@ -148,7 +172,7 @@ else
 					$("#msg").empty();
 					  
 			        
-					 $('#smg').append(err);
+					 $('#msg').append(err);
 					 	 
 					 
 					 $(".total").click(function()

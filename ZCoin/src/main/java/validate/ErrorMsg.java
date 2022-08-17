@@ -8,9 +8,13 @@ public enum ErrorMsg
 	  PASSWORD(404),
 	  MAIL(405),
 	  ALPHABETS(406),
-	  NUMBER(409),
+	  NUMBER(414),
 	  AMOUNT(408),
-	  WITHDRAW(410);
+	  WITHDRAW(409),
+	  MAIL_ID(410),
+	  HUMAN_ID(411),
+	  MOBILE(412),
+	  EMPTY(413);
 	  
 	  private final int code;
 	  

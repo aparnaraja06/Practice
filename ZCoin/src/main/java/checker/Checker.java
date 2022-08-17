@@ -30,14 +30,14 @@ public class Checker {
 		
 		if(password.length()<8)
 		{
-			result=false;
+			throw new CustomException("ALPHABETS");
 		}
 		
 		String number=Long.toString(mobile);
 		
-		if(name.contains(password) || mail.contains(password) || number.contains(password))
+		if(password.contains(name) || password.contains(mail) || password.contains(number))
 		{
-			result=false;
+			throw new CustomException("ALPHABETS");
 		}
 		
 		Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
@@ -54,6 +54,11 @@ public class Checker {
 	public void validateAmount(String amount)throws CustomException
 	{
 		boolean result= false;
+		
+		if(amount==null || amount.isEmpty())
+		{
+			throw new CustomException("EMPTY");
+		}
 		
 		Pattern pattern = Pattern.compile("[0-9]+([,.][0-9]{1,2})?");
 		Matcher matcher = pattern.matcher(amount);
@@ -81,22 +86,101 @@ public class Checker {
 	{
 		boolean result= false;
 		
-		Pattern pattern = Pattern.compile("[0-9]");
-		Matcher matcher = pattern.matcher(number);
+		if(number==null || number.isEmpty())
+		{
+			throw new CustomException("EMPTY");
+		}
 		
-		result = matcher.find();
+		result = number.matches("[0-9]+");
 		
 		if(!result)
 		{
+			
 			throw new CustomException("NUMBER");
 		}
 		
-		int num = Integer.valueOf(number);
+		long num = Long.valueOf(number);
 		
-		if(num < 0)
+		System.out.println("Num : "+num);
+		
+		if(num <= 0)
 		{
+			
 			throw new CustomException("NUMBER");
 		}
+	}
+	
+	public void validateMail(String mail)throws CustomException
+	{
+          boolean result= false;
+          
+          if(mail==null || mail.isEmpty())
+          {
+        	  result=false;
+          }
+          
+		
+		Pattern pattern = Pattern.compile("^[A-Za-z0-9+-._]+@(.+)$");
+		Matcher matcher = pattern.matcher(mail);
+		
+         result = matcher.find();
+         
+		
+		if(!result)
+		{
+			throw new CustomException("MAIL_ID");
+		}
+		
+	}
+	
+	public void validateMobile(String mobile)throws CustomException
+	{
+		boolean result= false;
+        
+        if(mobile==null || mobile.isEmpty())
+        {
+      	  result=false;
+        }
+        
+        if(mobile.length()!=10)
+        {
+        	throw new CustomException("MOBILE");
+        }
+        
+       //checkInteger(mobile);
+        
+		Pattern pattern = Pattern.compile("[7-9][0-9]{9}");
+		Matcher matcher = pattern.matcher(mobile);
+		
+       result = matcher.find();
+       
+       if(!result)
+		{
+			throw new CustomException("MOBILE");
+		}
+	}
+	
+	public void validateHumanId(String human_id)throws CustomException
+	{
+            boolean result= true;
+        
+        if(human_id==null || human_id.isEmpty())
+        {
+      	  result=false;
+        }
+        
+        if(human_id.length()!=12)
+        {
+        	result= false;
+        }
+        
+       //checkInteger(human_id);
+       
+       if(!result)
+		{
+			throw new CustomException("HUMAN_ID");
+		}
+
 	}
 
 }

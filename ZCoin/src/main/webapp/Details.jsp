@@ -35,7 +35,7 @@ if(typeName.equals("details"))
 {
 %>
 <h1>USER DETAILS</h1>
-<table class="center">
+<table id="center">
 <tr>
 <th>MAIL</th>
 <th>NAME</th>
@@ -43,7 +43,8 @@ if(typeName.equals("details"))
 <th>HUMAN_ID</th>
 <th>RC AMOUNT</th>
 <th>APPROVED</th>
-<th>ROLE</th>
+<th>ROLE AS USER</th>
+<th>ROLE AS ADMIN</th>
 </tr>
 <%
 
@@ -52,7 +53,7 @@ List<User> list = coin.showWaitingList();
 if(list.isEmpty())
 {
 %>
-<tr><td colspan="5" class="record"><b>*** No records found ***</b></td></tr>
+<tr><td colspan="8" class="record"><b>*** No records found ***</b></td></tr>
 <%
 }
 else
@@ -62,14 +63,14 @@ for(int i=0;i<list.size();i++)
 	User user=list.get(i);
 %>
 <tr>
-<td id="mail"><%=user.getMail()%></td>
+<td class="mail"><%=user.getMail()%></td>
 <td><%=user.getName() %></td>
 <td><%=user.getMobile()%></td>
 <td><%=user.getHuman_id()%></td>
 <td><%=user.getRc_amount()%></td>
 <td><%=user.getRole() %></td>
-<td><br><br><input type="button" class="add" onClick="userLogin('mail')" value="ADD USER"><br><br>
-<input type="button" class="add" onClick="adminLogin('mail')"value="ADD ADMIN"><br><br></td>
+<td><button class="add" value="user">ADD USER</button></td>
+<td><button class="add" value="admin">ADD ADMIN</button></td>
 </tr>
 <%} }%>
 </table>
@@ -100,16 +101,26 @@ Account account=coin.accountDetails(id);
 </table>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
-	function userLogin(mail_id)
-	{
+$(document).ready(function(){
+
+$("#center").on('click', '.add', function() {
+
+	
+		var currentRow = $(this).closest("tr");
+
+		  var id = currentRow.find(".mail").html(); // get current row 1st table cell TD value
+		  
+		var temp = $(this).attr("value");
 		
-		var mail = document.getElementById(mail_id);
-		
-		var id = mail.innerHTML;
-		
-		var role = "user";
-		
-		//alert("mail : "+id);
+		var role;
+		if(temp==="user")
+		{
+			 role="user";
+		}
+		else
+		{
+			role = "admin";
+		}
 		
        $.ajax({
 			
@@ -138,23 +149,11 @@ Account account=coin.accountDetails(id);
 
 					try
 					{
-					if(xhr.status==401)
-					{
-						throw "Oops! Connection failed! "; // No I18N
-					}
-					
-					else if(xhr.status==402)
-					{
-						throw "Error! couldn't close Connection! "; // No I18N
-					}
-					else if(xhr.status==403)
-					{
-						throw "Username should not be empty!"; // No I18N
-					}
-					else if(xhr.status==404)
-					{
-						throw "Password should not be empty!";  // No I18N
-					}
+				
+				    if(xhr.status==404)
+				    {
+				    	throw "Page not found";
+				    }
 					else
 					{
 						throw "Error! Something went wrong"; // No I18N
@@ -172,80 +171,9 @@ Account account=coin.accountDetails(id);
 					}
 				}); 
 				
-		}
-	function adminLogin(mail_id)
-	{
-		
-		var mail = document.getElementById(mail_id);
-		
-		var id = mail.innerHTML;
-		
-		var role = "admin";
-		
-		//alert("mail : "+id);
-		
-       $.ajax({
-			
-			type : 'POST',
-			url: 'add',
-			data :{id : id,role : role},
-			success:function(result)
-			{
-				if(result=="Invalid username") 
-				{
-					 $("#result").empty();
-					 
-				 $('#result').append(result);
-				 				  
-				}
-				else
-				{
-					 $("#result").empty();
-					 
-					 $('#result').append("Successfully added!");
-				}
-				
-			},
-			 error: function(xhr)
-				{
-
-					try
-					{
-					if(xhr.status==401)
-					{
-						throw "Oops! Connection failed! "; // No I18N
-					}
-					
-					else if(xhr.status==402)
-					{
-						throw "Error! couldn't close Connection! "; // No I18N
-					}
-					else if(xhr.status==403)
-					{
-						throw "Username should not be empty!"; // No I18N
-					}
-					else if(xhr.status==404)
-					{
-						throw "Password should not be empty!";  // No I18N
-					}
-					else
-					{
-						throw "Error! Something went wrong"; // No I18N
-					}
-					}
-					catch(err)
-					{
-					$("#result").empty();
-					  
-			        
-					 $('#result').append(err);
-					 	 
-					 
-					}
-					}
-				}); 
-				
-		}
+		});
+	
+});
 </script>	
 </body>
 </html>

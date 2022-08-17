@@ -88,9 +88,13 @@ public class CoinOperation
 	{
 		return coin.zCoinRate();
 	}
-	public double changeZCoinRate(double amount)
+	public double changeZCoinRate(double amount)throws CustomException
 	{
 		return coin.changeZCoinRate(amount);
+	}
+	public void changeZcAmount(double times)throws CustomException
+	{
+		coin.changeZcAmount(times);
 	}
 	public String getDate()
 	{
@@ -131,6 +135,10 @@ public class CoinOperation
 	public List<Transaction> getHistoryByUserId(int user_id)throws CustomException
 	{
 		return coin.getHistoryByUserId(user_id);
+	}
+	public boolean checkMailExists(String mail)throws CustomException
+	{
+		return coin.checkMailExists(mail);
 	}
 	
 }

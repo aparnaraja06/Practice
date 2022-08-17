@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import checker.Checker;
 import custom.CustomException;
 import instance.CreateInstance;
 import operation.CoinOperation;
@@ -39,6 +40,7 @@ public class SignupServlet extends HttpServlet {
 		
 		PrintWriter out=response.getWriter();
 		
+		
 		//CoinOperation coin = (CoinOperation) request.getServletContext().getAttribute("Instance");
 		
 		String name = request.getParameter("name");
@@ -54,8 +56,19 @@ public class SignupServlet extends HttpServlet {
 		{
 			CoinOperation coin = CreateInstance.COINOPERATION.getCoinInstance();
 			
+			Checker check = CreateInstance.COINOPERATION.getCheckInstance();
+			
+			check.checkName(name);
+			check.validateMail(mail);
+			coin.checkMailExists(mail);
+			check.validateMobile(mobile);
+			check.validateHumanId(human_id);
+			check.validateAmount(amount);
+			
 			long mobile_num = Long.parseLong(mobile);
 			double rc_amount = Double.parseDouble(amount);
+			
+			check.validatePassword(password, name, mobile_num, mail);
 			
 			User user = new User();
 			
@@ -90,7 +103,7 @@ public class SignupServlet extends HttpServlet {
 		}
 		catch(CustomException e)
 		{
-			//System.out.println(e.getMessage());
+
             String error=e.getMessage();
 			
             ErrorMsg err = ErrorMsg.valueOf(error);

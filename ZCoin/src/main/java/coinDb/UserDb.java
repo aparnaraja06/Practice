@@ -126,8 +126,7 @@ public class UserDb
 				if (result.next()) 
 				{
 					id=result.getInt(1);
-					
-					//System.out.println("Id : "+id);
+			
 				}
 				
 				return id;
@@ -139,6 +138,7 @@ public class UserDb
 			throw new CustomException(e);
 		}
 		catch (Exception e) {
+			System.out.println(e.getMessage());
 			throw new CustomException("Unable to add user");
 		}
 		
