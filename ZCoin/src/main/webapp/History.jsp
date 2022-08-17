@@ -1,5 +1,5 @@
 <%@ page import="operation.CoinOperation" %>
-<%@ page import="instance.CreateInstance"%>
+<%@ page import="operation.CreateInstance"%>
 <%@ page import="java.util.Map.Entry" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>

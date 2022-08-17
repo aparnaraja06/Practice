@@ -1,6 +1,6 @@
 <%@ page import="operation.CoinOperation" %>
 <%@ page import="user.User" %>
-<%@ page import="instance.CreateInstance"%>
+<%@ page import="operation.CreateInstance"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>

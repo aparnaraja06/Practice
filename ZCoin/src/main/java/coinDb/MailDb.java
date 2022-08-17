@@ -1,12 +1,12 @@
 package coinDb;
 
 import java.sql.PreparedStatement;
+
 import java.sql.ResultSet;
 import java.util.List;
 
-import checker.Checker;
-import connect.MysqlConnection;
-import custom.CustomException;
+import operation.Checker;
+import operation.CustomException;
 import user.User;
 
 public class MailDb {

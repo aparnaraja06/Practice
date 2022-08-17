@@ -1,7 +1,7 @@
 <%@ page import="operation.CoinOperation" %>
 <%@ page import="user.User" %>
 <%@ page import="account.Account" %>
-<%@ page import="instance.CreateInstance"%>
+<%@ page import="operation.CreateInstance"%>
 <%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
