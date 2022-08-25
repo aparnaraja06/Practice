@@ -16,12 +16,9 @@ public class TransactionDb
 
 	public void createTable()throws CustomException
 	{
-		String query="CREATE TABLE IF NOT EXISTS transaction(user_id int not null, from_account int not null,"
-				+ " to_account int not null, type varchar(10) not null, amount double , date varchar(20),"
-				+ " foreign key(user_id) references user(user_id), "
-				+ "foreign key(from_account) references account(account_num))";
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query)) {
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.createTransactionTable())) {
 			statement.executeUpdate();
 		} 
 		catch(CustomException e)
@@ -35,10 +32,9 @@ public class TransactionDb
 	
 	public void addTransaction(Transaction transfer)throws CustomException
 	{
-		String query="INSERT INTO transaction(user_id,from_account,to_account,type,amount,date) "
-				+ "VALUES(?,?,?,?,?,?)";
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query)) {
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.addTransaction())) {
 		
 			int user_id = transfer.getUser_id();
 			int from_account = transfer.getFrom_account();
@@ -70,11 +66,11 @@ public class TransactionDb
 	
 	public Map<Integer,List<Transaction>> getAllHistory()throws CustomException
 	{
-		String query = "SELECT * FROM transaction";
 		
 		Map<Integer,List<Transaction>> transactionMap = new HashMap<>();
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query)) 
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.getAllHistory())) 
 		{
 			try (ResultSet result = statement.executeQuery()) 
 			{
@@ -118,11 +114,11 @@ public class TransactionDb
 	
 	public List<Transaction> getHistoryByUserId(int user_id)throws CustomException
 	{
-		String query = "SELECT * FROM transaction WHERE user_id=?";
 		
 		List<Transaction> list = new ArrayList<>();
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query)) 
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.getHistoryByUserId())) 
 		{
 			statement.setInt(1, user_id);
 			

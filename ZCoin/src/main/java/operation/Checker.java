@@ -7,35 +7,55 @@ import java.util.regex.Pattern;
 
 public class Checker {
 	
-	public void checkName(String name)throws CustomException
+	public void checkString(String name)throws CustomException
 	{
 		if(name==null || name.isEmpty())
 		{
-			throw new CustomException("USERNAME"); // No I18N
+			throw new CustomException("EMPTY"); // No I18N
 		}
 	}
 	
-	public void checkPassword(String pass)throws CustomException
+	public void checkInteger(String number)throws CustomException
 	{
-		if(pass==null || pass.isEmpty())
+		boolean result= false;
+		
+		checkString(number);
+		
+		result = number.matches("[0-9]+");
+		
+		if(!result)
 		{
-			throw new CustomException("PASSWORD"); // No I18N
+			
+			throw new CustomException("NUMBER");
+		}
+		
+		long num = Long.valueOf(number);
+		
+		
+		if(num <= 0)
+		{
+			
+			throw new CustomException("NUMBER");
 		}
 	}
 	
-	public void validatePassword(String password,String name,long mobile,String mail)throws CustomException
+	public void validatePassword(String password,String name,String mobile,String mail)throws CustomException
 	{
 		boolean result=false;
 		
+		checkString(name);
+		checkString(password);
+		checkString(mail);
+		checkString(mobile);
+		checkInteger(mobile);
 		
 		if(password.length()<8)
 		{
 			throw new CustomException("ALPHABETS");
 		}
 		
-		String number=Long.toString(mobile);
 		
-		if(password.contains(name) || password.contains(mail) || password.contains(number))
+		if(password.contains(name) || password.contains(mail) || password.contains(mobile))
 		{
 			throw new CustomException("ALPHABETS");
 		}
@@ -55,10 +75,8 @@ public class Checker {
 	{
 		boolean result= false;
 		
-		if(amount==null || amount.isEmpty())
-		{
-			throw new CustomException("EMPTY");
-		}
+		checkString(amount);
+		checkInteger(amount);
 		
 		Pattern pattern = Pattern.compile("[0-9]+([,.][0-9]{1,2})?");
 		Matcher matcher = pattern.matcher(amount);
@@ -73,51 +91,20 @@ public class Checker {
 		double price = Double.parseDouble(amount);
 	
 		
-		if(price < 0)
+		if(price < 0.0)
 		{
 			throw new CustomException("AMOUNT");
 		}
 		
 		
-		
 	}
 	
-	public void checkInteger(String number)throws CustomException
-	{
-		boolean result= false;
-		
-		if(number==null || number.isEmpty())
-		{
-			throw new CustomException("EMPTY");
-		}
-		
-		result = number.matches("[0-9]+");
-		
-		if(!result)
-		{
-			
-			throw new CustomException("NUMBER");
-		}
-		
-		long num = Long.valueOf(number);
-		
-		System.out.println("Num : "+num);
-		
-		if(num <= 0)
-		{
-			
-			throw new CustomException("NUMBER");
-		}
-	}
 	
 	public void validateMail(String mail)throws CustomException
 	{
           boolean result= false;
           
-          if(mail==null || mail.isEmpty())
-          {
-        	  result=false;
-          }
+         checkString(mail);
           
 		
 		Pattern pattern = Pattern.compile("^[A-Za-z0-9+-._]+@(.+)$");
@@ -137,17 +124,14 @@ public class Checker {
 	{
 		boolean result= false;
         
-        if(mobile==null || mobile.isEmpty())
-        {
-      	  result=false;
-        }
+        checkString(mobile);
         
         if(mobile.length()!=10)
         {
         	throw new CustomException("MOBILE");
         }
         
-       //checkInteger(mobile);
+       checkInteger(mobile);
         
 		Pattern pattern = Pattern.compile("[7-9][0-9]{9}");
 		Matcher matcher = pattern.matcher(mobile);
@@ -162,19 +146,16 @@ public class Checker {
 	
 	public void validateHumanId(String human_id)throws CustomException
 	{
-            boolean result= true;
+         boolean result= true;
         
-        if(human_id==null || human_id.isEmpty())
-        {
-      	  result=false;
-        }
+       checkString(human_id);
         
         if(human_id.length()!=12)
         {
         	result= false;
         }
         
-       //checkInteger(human_id);
+       checkInteger(human_id);
        
        if(!result)
 		{

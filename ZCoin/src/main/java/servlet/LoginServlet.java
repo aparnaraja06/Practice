@@ -52,7 +52,14 @@ public class LoginServlet extends HttpServlet {
 				
 				Checker check = CreateInstance.COINOPERATION.getCheckInstance();
 				
-				check.checkName(name);
+				try
+				{
+				check.checkString(name);
+				}
+				catch(CustomException e)
+				{
+					throw new CustomException("USERNAME");
+				}
 				
 				int id=coin.getId(name);
 				
@@ -81,6 +88,7 @@ public class LoginServlet extends HttpServlet {
 					
 				}
 			}
+				
 			catch(CustomException e)
 			{
 				

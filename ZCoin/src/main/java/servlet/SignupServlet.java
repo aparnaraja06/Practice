@@ -41,35 +41,60 @@ public class SignupServlet extends HttpServlet {
 		
 		PrintWriter out=response.getWriter();
 		
-		
-		//CoinOperation coin = (CoinOperation) request.getServletContext().getAttribute("Instance");
+		HttpSession session = request.getSession();
 		
 		String name = request.getParameter("name");
+		
+		String msg = "Error! Update failed";
+		
+		try
+		{
+		CoinOperation coin = CreateInstance.COINOPERATION.getCoinInstance();
+		
+		Checker check = CreateInstance.COINOPERATION.getCheckInstance();
+		
+		int id = (int)request.getSession().getAttribute("user_id");
+		
+		try
+		{
+		check.checkString(name);
+		}
+		catch(CustomException e)
+		{
+			throw new CustomException("USERNAME");
+		}
+		
+		if(request.getParameter("type").equals("edit"))
+		{
+			boolean result=coin.updateName(name, id);
+			
+			if(!result)
+			{
+               session.setAttribute("Error", msg);
+				
+				out.print(msg);
+			}
+		}
+		else
+		{
 		String mail = request.getParameter("mail");
 		String mobile = request.getParameter("mobile");
 		String human_id = request.getParameter("human_id");
 		String password = request.getParameter("password");
 		String amount =  request.getParameter("amount");
-		
-		HttpSession session = request.getSession();
-		
-		try
-		{
-			CoinOperation coin = CreateInstance.COINOPERATION.getCoinInstance();
+	
 			
-			Checker check = CreateInstance.COINOPERATION.getCheckInstance();
-			
-			check.checkName(name);
 			check.validateMail(mail);
 			coin.checkMailExists(mail);
 			check.validateMobile(mobile);
 			check.validateHumanId(human_id);
 			check.validateAmount(amount);
 			
+			
+			check.validatePassword(password, name, mobile, mail);
+			
 			long mobile_num = Long.parseLong(mobile);
 			double rc_amount = Double.parseDouble(amount);
-			
-			check.validatePassword(password, name, mobile_num, mail);
 			
 			User user = new User();
 			
@@ -83,7 +108,7 @@ public class SignupServlet extends HttpServlet {
 			
 			int user_id=coin.addUser(user);
 			
-			String msg="User already Exists";
+			String text="User already Exists";
 			
 			if(user_id!=0)
 			{
@@ -95,12 +120,13 @@ public class SignupServlet extends HttpServlet {
 			}
 			else
 			{
-                session.setAttribute("Error", msg);				
+                session.setAttribute("Error", text);				
 				
-			    out.print(msg);
+			    out.print(text);
 
 			}
 			
+		}
 		}
 		catch(CustomException e)
 		{

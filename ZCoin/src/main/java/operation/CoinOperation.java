@@ -140,5 +140,9 @@ public class CoinOperation
 	{
 		return coin.checkMailExists(mail);
 	}
+	public boolean updateName(String name,int id)throws CustomException
+	{
+		return coin.updateName(name, id);
+	}
 	
 }

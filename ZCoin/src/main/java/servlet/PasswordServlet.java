@@ -50,7 +50,14 @@ response.setContentType("text/html");
 			
 			Checker check = CreateInstance.COINOPERATION.getCheckInstance();
 			
-			check.checkPassword(pass1);
+			try
+			{
+			check.checkString(pass1);
+			}
+			catch(CustomException e)
+			{
+				throw new CustomException("PASSWORD");
+			}
 			
 			String pass2=coin.getPassword(user_id);
 			

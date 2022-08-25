@@ -68,20 +68,24 @@ public class TransactionServlet extends HttpServlet {
 		{
 			String account1 = request.getParameter("account1");
 			
-			check.checkInteger(account1);
+		check.checkInteger(account1);
+		
+		int acc1 = Integer.parseInt(account1);
 		   	
 			String account2 = request.getParameter("account2");
 			
 			check.checkInteger(account2);
 			
-			if(account1 != account2)
+		int acc2 = Integer.parseInt(account2);	
+			
+			if(acc1 != acc2)
 			{
 				session.setAttribute("Error", msg);
 				
 				out.print(msg);
 			}
 			
-			int acc_num2 =Integer.parseInt(account2);
+			//int acc_num2 =Integer.parseInt(account2);
 			
 			String amountt = request.getParameter("amount");
 			
@@ -89,7 +93,7 @@ public class TransactionServlet extends HttpServlet {
 			
 			double get_amount = Double.parseDouble(amountt);
 			
-			result = coin.transferZCoin(acc_num, acc_num2, get_amount);
+			result = coin.transferZCoin(acc_num, acc2, get_amount);
 			
 			if(!result)
 			{
@@ -101,7 +105,7 @@ public class TransactionServlet extends HttpServlet {
 			Transaction transfer = new Transaction();
 			
 			transfer.setFrom_account(acc_num);
-			transfer.setTo_account(acc_num2);
+			transfer.setTo_account(acc2);
 			transfer.setAmount(get_amount);
 			transfer.setType("Transferred");
 			transfer.setUser_id(id);

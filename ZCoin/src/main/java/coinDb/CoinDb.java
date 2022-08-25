@@ -177,6 +177,10 @@ public class CoinDb
 	{
 		return mailObj.checkMailExists(mail);
 	}
+	public boolean updateName(String name,int id)throws CustomException
+	{
+		return userObj.updateName(name, id);
+	}
 	
 	
 }

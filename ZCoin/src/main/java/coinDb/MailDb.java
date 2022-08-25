@@ -13,10 +13,10 @@ public class MailDb {
 	
 	public void createTable()throws CustomException
 	{
-		String query="CREATE TABLE IF NOT EXISTS mail(user_id int,"
-				+ " mail_id varchar(100)not null,foreign key(user_id) references user(user_id))";
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query)) {
+		
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.createMailTable())) {
 			statement.executeUpdate();
 		} 
 		catch(CustomException e)
@@ -32,13 +32,13 @@ public class MailDb {
 	{
 		Checker check = new Checker();
 		
-		check.checkName(mail);
+		check.checkString(mail);
 		
-		String query="SELECT user_id FROM mail WHERE mail_id=?";
 		
 		int id=0;
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.getId(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setString(1, mail);
@@ -55,7 +55,7 @@ public class MailDb {
 		}
 		catch(CustomException e)
 		{
-			throw new CustomException(e.getMessage());
+			throw new CustomException("USERNAME");
 		}
 		catch (Exception e) {
 			throw new CustomException("Id not available");
@@ -64,9 +64,9 @@ public class MailDb {
 	
 	public void addMail(String mail,int id)throws CustomException
 	{
-		String query="INSERT INTO mail(user_id,mail_id) VALUES(?,?)";
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.addMail(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setInt(1, id);
@@ -77,7 +77,6 @@ public class MailDb {
 		}
 		catch(CustomException e)
 		{
-			System.out.println("In mail db");
 			throw new CustomException(e.getMessage());
 		}
 		catch (Exception e) {
@@ -88,11 +87,10 @@ public class MailDb {
 	public String getMailById(int id)throws CustomException
 	{
 		
-		String query="SELECT mail_id FROM mail WHERE user_id=?";
-		
 		String mail="";
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.getMailById(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setInt(1, id);
@@ -121,12 +119,12 @@ public class MailDb {
 	
 	public boolean checkMailExists(String mail)throws CustomException
 	{
-		String query = "SELECT mail_id FROM mail WHERE mail_id=?";
 		
 		String mail_id=null;
 		boolean check=true;
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.checkMailExists(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setString(1, mail);

@@ -53,9 +53,17 @@ public class ChangePassword extends HttpServlet {
 			
 			String name = user.getName();
 			long mobile = user.getMobile();
+			String number = String.valueOf(mobile);
 			String mail = user.getMail();
 			
-			check.checkPassword(old);
+			try
+			{
+			check.checkString(old);
+			}
+			catch(CustomException e)
+			{
+				throw new CustomException("PASSWORD");
+			}
 			String invalid = "Incorrect password";
 			
 			if(pass.equals(old))
@@ -64,10 +72,18 @@ public class ChangePassword extends HttpServlet {
 				
 				String new2 = request.getParameter("new2");
 				
-				check.checkPassword(new1);
-				check.validatePassword(new1,name,mobile,mail);
-				check.checkPassword(new2);
-				check.validatePassword(new2,name,mobile,mail);
+				try
+				{
+				check.checkString(new1);
+				check.checkString(new2);
+				}
+				catch(CustomException e)
+				{
+					throw new CustomException("PASSWORD");
+				}
+				
+				check.validatePassword(new1,name,number,mail);
+				check.validatePassword(new2,name,number,mail);
 				
 				String msg = "Password doesn't match";
 				

@@ -255,8 +255,8 @@ else
 			
 			 error: function(xhr)
 			{
-				 alert("Xhr : "+xhr.status);
-
+				
+				 alert("Status : "+xhr.status);
 				try
 				{
 				

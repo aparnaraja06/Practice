@@ -39,6 +39,17 @@ body,html
   margin-left:50px;
   
 }
+#btn
+{
+
+    top:50%;
+    background-color:#0a0a23;
+    color: #fff;
+    border:none;
+     height: 40px; 
+      border-radius: 20px; 
+    
+}
 h2
 {
 	text-align:center;

@@ -6,17 +6,33 @@
 <meta charset="UTF-8">
 <title>MENU</title>
 <link rel="stylesheet" href="Menu.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+        $(document).ready(function () {
+            
+            var links = document.querySelectorAll('nav a').
+            forEach(link => {
+            	
+            	if(link.href === window.location.href)
+            	{
+            		link.classList.add('active');
+            	}
+            })
+             
+        });
+    </script>
 </head>
 <body>
 <nav>
 <br>
-<ul>
+
 <%
 String role =(String)session.getAttribute("Role");
 
 if(role.equals("admin"))
 {
 %>
+<ul class="navbar">
 <li><a href="Details.jsp?type=details">DETAILS</a></li>
 <li><a href="Details.jsp?type=account">ACCOUNT</a></li>
 <li><a href="Signup.jsp?type=profile">PROFILE</a></li>
@@ -35,7 +51,7 @@ if(role.equals("admin"))
 else
 {
 %>
-<ul>
+<ul class="navbar">
 <li><a href="Details.jsp?type=account">ACCOUNT</a></li>
 <li><a href="Signup.jsp?type=profile">PROFILE</a></li>
 <li><a href="UpdateDetails.jsp">CHANGE PASSWORD</a></li>

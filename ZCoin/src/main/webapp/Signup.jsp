@@ -59,15 +59,17 @@ else
 <h2>PROFILE</h2><br>
 <p id="msg"></p>
 <label>NAME</label><br>
-<input type="text" id="name" value=<%=user.getName()%>><br>
+<input type="text" id="name" value=<%=user.getName()%> readonly>
+<input type="button" id="btn" value="EDIT" onclick="point_cursor()">
 <label>MAIL ID</label><br>
-<input type="text" id="mail" value=<%=user.getMail()%>><br>
+<input type="text" id="mail" value=<%=user.getMail()%> readonly><br>
 <label>MOBILE NUMBER</label><br>
-<input type="text"  id="mobile" value=<%=user.getMobile()%>><br>
+<input type="text"  id="mobile" value=<%=user.getMobile()%> readonly><br>
 <label>HUMAN ID</label><br>
-<input type="text" id="human_id" value=<%=user.getHuman_id()%>><br>
+<input type="text" id="human_id" value=<%=user.getHuman_id()%> readonly><br>
 <label>AMOUNT</label><br>
-<input type="text" id="amount" value=<%=user.getRc_amount()%>>
+<input type="text" id="amount" value=<%=user.getRc_amount()%> readonly><br><br>
+<input type="button" id="loginbtn" value="SUBMIT" onclick="edit()" disabled><br>
 </form>
 </div>
 </div>
@@ -84,13 +86,14 @@ else
 			var human_id=$('#human_id').val();
 			var password=$('#pass').val();
 			var amount=$('#amount').val();
+			var type="signup";
 			
 			$.ajax({
 				
 				type : 'POST',
 				url: 'signUp',
 				data :{name : name, mail : mail,mobile : mobile, human_id : human_id,
-					password : password, amount : amount},
+					password : password, amount : amount,type : type},
 					
 				success:function(result)
 				{
@@ -163,6 +166,88 @@ else
 						throw "Invalid mobile number"; // No I18N
 					}
 					else
+					{
+						throw "Error! Something went wrong"; // No I18N
+					}
+					}
+					catch(err)
+					{
+					$("#msg").empty();
+					  
+			        
+					 $('#msg').append(err);
+					 	 
+					 
+					 $(".total").click(function()
+						{
+						  $("#msg").empty();
+						});
+					}
+					}
+				}); 
+		}
+		
+		function point_cursor()
+		{
+			document.getElementById('name').readonly = false;
+			
+			document.getElementById('loginbtn').disabled = false;
+			
+			var text = $('#name');
+			
+			var str_length = text.val().length*2;
+			
+			text.focus();
+			
+			text[0].setSelectionRange(str_length,str_length);
+			
+		}
+		
+		function edit()
+		{
+			alert("edit");
+			
+			var name=$('#name').val();
+			
+			var type = "edit";
+			
+	       $.ajax({
+				
+				type : 'POST',
+				url: 'signUp',
+				data :{name : name,type : type},
+					
+				success:function(result)
+				{
+		
+					if(result=="Error! Update failed") 
+					{
+						 $("#msg").empty();
+						 
+					 $('#msg').append(result);
+					 
+					  
+					}
+					else
+					{
+						 $("#msg").empty();
+						 
+						 $('#msg').append("Successfully updated!");
+						 
+						 document.getElementById('name').readonly = true;
+						 document.getElementById('loginbtn').disabled = true;
+			
+					}
+					
+				},
+				
+				error: function(xhr)
+				{
+        
+					try
+					{
+					
+					if(xhr.status >= 400)
 					{
 						throw "Error! Something went wrong"; // No I18N
 					}

@@ -2,11 +2,11 @@ package coinDb;
 
 import java.sql.PreparedStatement;
 
+
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import operation.Checker;
 import operation.CustomException;
 import user.User;
 
@@ -17,12 +17,9 @@ public class UserDb
 
 	public void createTable()throws CustomException
 	{
-		String query="CREATE TABLE IF NOT EXISTS user(user_id int auto_increment,name varchar(50) not null,"
-		+ "mobile long, human_id varchar(12), password varchar(8) not null, rc_amount double not null,"
-		+ "approved boolean default false,role varchar(10) default \"user\",unique(human_id),"
-		+ " primary key (user_id))Engine=InnoDb auto_increment=100";
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query)) {
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.createUserTable())) {
 			statement.executeUpdate();
 		} 
 		catch(CustomException e)
@@ -38,12 +35,11 @@ public class UserDb
 	
 	public String getRole(int id)throws CustomException
 	{
-		String query="SELECT role FROM user WHERE user_id=?";
 		
 		String role="";
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
-				PreparedStatement.RETURN_GENERATED_KEYS)) 
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.getRole(),PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setInt(1, id);
 			
@@ -68,11 +64,11 @@ public class UserDb
 	
 	public String getPassword(int id)throws CustomException
 	{
-		String query="SELECT password FROM user WHERE user_id=?";
 		
 		String password="";
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.getPassword(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setInt(1, id);
@@ -98,12 +94,11 @@ public class UserDb
 	
 	public int addUser(User user)throws CustomException
 	{
-		
-		String query="INSERT INTO user(name,mobile,human_id,password,rc_amount) VALUES(?,?,?,?,?)";
-		
+			
 		int id=0;
 		 
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.addUser(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			
@@ -146,11 +141,11 @@ public class UserDb
 	
 	public List<User> showWaitingList()throws CustomException
 	{
-		String query = "SELECT * FROM user WHERE approved=false";
 		
 		List<User> list = new ArrayList<>();
 		
-		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection().prepareStatement(query))
+		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.showWaitingList()))
 		{
 			try (ResultSet result = statement.executeQuery()) 
 			{
@@ -189,9 +184,8 @@ public class UserDb
 		int id = user.getUser_id();
 		
 		
-		String query = "UPDATE user SET approved=true WHERE user_id=?";
-		
-		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection().prepareStatement(query))
+		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.approveAsUser()))
 		{
 			statement.setInt(1, id);
 		
@@ -215,9 +209,9 @@ public class UserDb
        
        String role="admin";
 		
-		String query = "UPDATE user SET approved=true, role =? WHERE user_id=?";
 		
-		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection().prepareStatement(query))
+		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.approveAsAdmin()))
 		{
 			statement.setString(1, role);
 			statement.setInt(2, id);
@@ -238,11 +232,11 @@ public class UserDb
 	
 	public User getUser(int id)throws CustomException
 	{
-		String query="SELECT * FROM user WHERE user_id=?";
 		
 		User user = new User();
 		
-		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection().prepareStatement(query))
+		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.getUser()))
 		{
 			statement.setInt(1, id);
 			
@@ -274,9 +268,9 @@ public class UserDb
 	
 	public void changePassword(String pass,int id)throws CustomException
 	{
-		String query="UPDATE user SET password=? WHERE user_id=?"; // No I18N
 		
-		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection().prepareStatement(query))
+		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.changePassword()))
 		{
 			statement.setString(1, pass);
 			statement.setInt(2, id);
@@ -290,6 +284,29 @@ public class UserDb
 		}
 		catch (Exception e) {
 			throw new CustomException("Unable to update password"); // No I18N
+		}
+		
+	}
+	
+	public boolean updateName(String name,int id)throws CustomException
+	{
+		
+		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.updateName()))
+		{
+			statement.setString(1, name);
+			statement.setInt(2, id);
+			
+			statement.executeUpdate();
+			
+			return true;
+		}
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
+			throw new CustomException("Unable to update name"); // No I18N
 		}
 		
 	}

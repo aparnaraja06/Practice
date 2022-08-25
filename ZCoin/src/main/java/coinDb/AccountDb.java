@@ -13,11 +13,9 @@ public class AccountDb {
 	
 	public void createTable() throws CustomException
 	{
-		String query="CREATE TABLE IF NOT EXISTS account(user_id int not null, account_num int not null auto_increment,"
-				+ " rc_amount double not null, zc_amount double, primary key(account_num), "
-				+ "foreign key(user_id) references user(user_id))Engine=InnoDb auto_increment=1000";
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query)) {
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.createAccountTable())) {
 			statement.executeUpdate();
 		} 
 		catch(CustomException e)
@@ -32,11 +30,11 @@ public class AccountDb {
 	
 	public int addAccount(User user)throws CustomException
 	{
-		String query = "INSERT INTO account(user_id,rc_amount) VALUES(?,?)";
 		
 		int acc_num=0;
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.addAccount(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			int user_id = user.getUser_id();
@@ -73,11 +71,11 @@ public class AccountDb {
 	
 	public Account accountDetails(int id)throws CustomException
 	{
-		String query="SELECT * FROM account WHERE user_id=?";
 		
 		Account account = new Account();
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.accountDetails(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setInt(1, id);
@@ -106,11 +104,11 @@ public class AccountDb {
 	
 	public int getAccountNumById(int id)throws CustomException
 	{
-		String query = "SELECT account_num FROM account WHERE user_id=?";
 		
 		int account_num=0;
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.getAccountNumById(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setInt(1, id);
@@ -136,11 +134,11 @@ public class AccountDb {
 	
 	public double getRcBalance(int acc_num)throws CustomException
 	{
-		String query="SELECT rc_amount FROM account WHERE account_num=?";
 		
 		double amount=0.0;
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.getRcBalance(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setInt(1, acc_num);
@@ -178,9 +176,8 @@ public class AccountDb {
 		
 		double total = balance-amount;
 		
-		String query = "UPDATE account SET rc_amount=? WHERE account_num=?";
-		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.withdrawRc(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setDouble(1, total);
@@ -206,9 +203,8 @@ public class AccountDb {
 		
 		double total = balance+amount;
 		
-		String query = "UPDATE account SET rc_amount=? WHERE account_num=?";
-		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.depositRc(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setDouble(1, total);
@@ -230,11 +226,11 @@ public class AccountDb {
 	
 	public double getZcBalance(int acc_num)throws CustomException
 	{
-		String query = "SELECT zc_amount FROM account WHERE account_num=?";
 		
 		double amount = 0.0;
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.getZcBalance(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
             statement.setInt(1, acc_num);
@@ -270,9 +266,9 @@ public class AccountDb {
 		
 		double total = balance-amount;
 		
-		String query = "UPDATE account SET zc_amount=? WHERE account_num=?";
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.withdrawZc(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setDouble(1, total);
@@ -298,9 +294,9 @@ public class AccountDb {
 		
 		double total = balance+amount;
 		
-		String query = "UPDATE account SET zc_amount=? WHERE account_num=?";
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.depositZc(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setDouble(1, total);
@@ -371,10 +367,9 @@ public class AccountDb {
 	
 	public void changeZcAmount(double times)throws CustomException
 	{
-		String query = "UPDATE account SET zc_amount=zc_amount * ? WHERE zc_amount > 0";
 		
-		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection().prepareStatement(query,
+		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
+				.prepareStatement(MysqlQuery.MYSQL.changeZcAmount(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setDouble(1, times);

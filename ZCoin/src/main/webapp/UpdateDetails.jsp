@@ -68,6 +68,9 @@
 					 
 					 $('#msg').append("Updated successfully"); // No I18N
 					 
+					 var successUrl = "logout";
+					    window.location.href = successUrl;
+					 
 				}
 			},
 			error: function(xhr)
