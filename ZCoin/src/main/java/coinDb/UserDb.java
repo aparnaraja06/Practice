@@ -19,7 +19,7 @@ public class UserDb
 	{
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.createUserTable())) {
+				.prepareStatement(MysqlQuery.CREATE.createUserTable())) {
 			statement.executeUpdate();
 		} 
 		catch(CustomException e)
@@ -39,7 +39,8 @@ public class UserDb
 		String role="";
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.getRole(),PreparedStatement.RETURN_GENERATED_KEYS)) 
+				.prepareStatement(MysqlQuery.SELECT_USER.getRole(),
+						PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setInt(1, id);
 			
@@ -68,7 +69,7 @@ public class UserDb
 		String password="";
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.getPassword(),
+				.prepareStatement(MysqlQuery.SELECT_USER.getPassword(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setInt(1, id);
@@ -98,7 +99,7 @@ public class UserDb
 		int id=0;
 		 
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.addUser(),
+				.prepareStatement(MysqlQuery.INSERT.addUser(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			
@@ -145,7 +146,7 @@ public class UserDb
 		List<User> list = new ArrayList<>();
 		
 		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.showWaitingList()))
+				.prepareStatement(MysqlQuery.SELECT_ALL.showWaitingList()))
 		{
 			try (ResultSet result = statement.executeQuery()) 
 			{
@@ -185,7 +186,7 @@ public class UserDb
 		
 		
 		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.approveAsUser()))
+				.prepareStatement(MysqlQuery.UPDATE_USER.approveAsUser()))
 		{
 			statement.setInt(1, id);
 		
@@ -211,7 +212,7 @@ public class UserDb
 		
 		
 		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.approveAsAdmin()))
+				.prepareStatement(MysqlQuery.UPDATE_USER.approveAsAdmin()))
 		{
 			statement.setString(1, role);
 			statement.setInt(2, id);
@@ -236,7 +237,7 @@ public class UserDb
 		User user = new User();
 		
 		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.getUser()))
+				.prepareStatement(MysqlQuery.SELECT_ALL.getUser()))
 		{
 			statement.setInt(1, id);
 			
@@ -270,7 +271,7 @@ public class UserDb
 	{
 		
 		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.changePassword()))
+				.prepareStatement(MysqlQuery.UPDATE_USER.changePassword()))
 		{
 			statement.setString(1, pass);
 			statement.setInt(2, id);
@@ -292,7 +293,7 @@ public class UserDb
 	{
 		
 		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.updateName()))
+				.prepareStatement(MysqlQuery.UPDATE_USER.updateName()))
 		{
 			statement.setString(1, name);
 			statement.setInt(2, id);

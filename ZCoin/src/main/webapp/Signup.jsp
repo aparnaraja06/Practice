@@ -189,6 +189,8 @@ else
 		
 		function point_cursor()
 		{
+			alert("Point");
+			
 			document.getElementById('name').readonly = false;
 			
 			document.getElementById('loginbtn').disabled = false;

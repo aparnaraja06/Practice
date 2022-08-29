@@ -15,7 +15,7 @@ public class AccountDb {
 	{
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.createAccountTable())) {
+				.prepareStatement(MysqlQuery.CREATE.createAccountTable())) {
 			statement.executeUpdate();
 		} 
 		catch(CustomException e)
@@ -34,7 +34,7 @@ public class AccountDb {
 		int acc_num=0;
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.addAccount(),
+				.prepareStatement(MysqlQuery.INSERT.addAccount(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			int user_id = user.getUser_id();
@@ -75,7 +75,7 @@ public class AccountDb {
 		Account account = new Account();
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.accountDetails(),
+				.prepareStatement(MysqlQuery.SELECT_ALL.accountDetails(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setInt(1, id);
@@ -108,7 +108,7 @@ public class AccountDb {
 		int account_num=0;
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.getAccountNumById(),
+				.prepareStatement(MysqlQuery.SELECT_ACCOUNT.getAccountNumById(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setInt(1, id);
@@ -138,7 +138,7 @@ public class AccountDb {
 		double amount=0.0;
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.getRcBalance(),
+				.prepareStatement(MysqlQuery.SELECT_ACCOUNT.getRcBalance(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setInt(1, acc_num);
@@ -177,7 +177,7 @@ public class AccountDb {
 		double total = balance-amount;
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.withdrawRc(),
+				.prepareStatement(MysqlQuery.TRANSACTION.withdrawRc(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setDouble(1, total);
@@ -204,7 +204,7 @@ public class AccountDb {
 		double total = balance+amount;
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.depositRc(),
+				.prepareStatement(MysqlQuery.TRANSACTION.depositRc(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setDouble(1, total);
@@ -230,7 +230,7 @@ public class AccountDb {
 		double amount = 0.0;
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.getZcBalance(),
+				.prepareStatement(MysqlQuery.SELECT_ACCOUNT.getZcBalance(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
             statement.setInt(1, acc_num);
@@ -268,7 +268,7 @@ public class AccountDb {
 		
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.withdrawZc(),
+				.prepareStatement(MysqlQuery.TRANSACTION.withdrawZc(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setDouble(1, total);
@@ -296,7 +296,7 @@ public class AccountDb {
 		
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.depositZc(),
+				.prepareStatement(MysqlQuery.TRANSACTION.depositZc(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setDouble(1, total);
@@ -369,7 +369,7 @@ public class AccountDb {
 	{
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.changeZcAmount(),
+				.prepareStatement(MysqlQuery.SELECT_MAIL.changeZcAmount(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setDouble(1, times);

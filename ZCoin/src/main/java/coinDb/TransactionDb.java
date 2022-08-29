@@ -18,7 +18,7 @@ public class TransactionDb
 	{
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.createTransactionTable())) {
+				.prepareStatement(MysqlQuery.CREATE.createTransactionTable())) {
 			statement.executeUpdate();
 		} 
 		catch(CustomException e)
@@ -34,7 +34,7 @@ public class TransactionDb
 	{
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.addTransaction())) {
+				.prepareStatement(MysqlQuery.INSERT.addTransaction())) {
 		
 			int user_id = transfer.getUser_id();
 			int from_account = transfer.getFrom_account();
@@ -70,7 +70,7 @@ public class TransactionDb
 		Map<Integer,List<Transaction>> transactionMap = new HashMap<>();
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.getAllHistory())) 
+				.prepareStatement(MysqlQuery.SELECT_ALL.getAllHistory())) 
 		{
 			try (ResultSet result = statement.executeQuery()) 
 			{
@@ -118,7 +118,7 @@ public class TransactionDb
 		List<Transaction> list = new ArrayList<>();
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.getHistoryByUserId())) 
+				.prepareStatement(MysqlQuery.SELECT_ACCOUNT.getHistoryByUserId())) 
 		{
 			statement.setInt(1, user_id);
 			

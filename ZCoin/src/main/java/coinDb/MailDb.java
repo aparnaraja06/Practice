@@ -16,7 +16,7 @@ public class MailDb {
 		
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.createMailTable())) {
+				.prepareStatement(MysqlQuery.CREATE.createMailTable())) {
 			statement.executeUpdate();
 		} 
 		catch(CustomException e)
@@ -38,7 +38,7 @@ public class MailDb {
 		int id=0;
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.getId(),
+				.prepareStatement(MysqlQuery.SELECT_MAIL.getId(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setString(1, mail);
@@ -66,7 +66,7 @@ public class MailDb {
 	{
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.addMail(),
+				.prepareStatement(MysqlQuery.INSERT.addMail(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setInt(1, id);
@@ -90,7 +90,7 @@ public class MailDb {
 		String mail="";
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.getMailById(),
+				.prepareStatement(MysqlQuery.SELECT_MAIL.getMailById(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setInt(1, id);
@@ -124,7 +124,7 @@ public class MailDb {
 		boolean check=true;
 		
 		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.MYSQL.checkMailExists(),
+				.prepareStatement(MysqlQuery.SELECT_MAIL.checkMailExists(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setString(1, mail);
