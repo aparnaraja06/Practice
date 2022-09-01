@@ -21,6 +21,44 @@ public class CoinDb
 	MailDb mailObj = new MailDb();
 	TransactionDb transactionObj = new TransactionDb();
 	
+	public void createDatabase()throws CustomException
+	{
+		mailObj.createDatabase();
+	}
+	
+	public void createDatabasePsql()throws CustomException
+	{
+		mailObj.createDatabasePsql();
+	}
+	
+	public void setMysql()
+	{
+		userObj.setMysql();
+		mailObj.setMysql();
+		accountObj.setMysql();
+		transactionObj.setMysql();
+	}
+	
+	public void setPsql()
+	{
+		userObj.setPsql();
+		mailObj.setPsql();
+		accountObj.setPsql();
+		transactionObj.setPsql();
+	}
+	
+	public void createDomain()throws CustomException
+	{
+		mailObj.createDomainInteger();
+		mailObj.createDomainMail();
+	}
+	
+	public void createSequence()throws CustomException
+	{
+		mailObj.createSequenceId();
+		mailObj.createSequenceAccount();
+	}
+	
 	public void createTable()throws CustomException
 	{
 		userObj.createTable();
@@ -56,7 +94,7 @@ public class CoinDb
 	}
 	public List<User> showWaitingList()throws CustomException
 	{
-		return userObj.showWaitingList();
+		return userObj.showWaitingList(mailObj);
 	}
 	public User approveAsUser(User user)throws CustomException
 	{
@@ -76,7 +114,7 @@ public class CoinDb
 	}
 	public User getUser(int id)throws CustomException
 	{
-		return userObj.getUser(id);
+		return userObj.getUser(id,mailObj);
 	}
 	public void changePassword(String pass,int id)throws CustomException
 	{

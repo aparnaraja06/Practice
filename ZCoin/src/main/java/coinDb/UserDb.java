@@ -7,19 +7,33 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import operation.ChooseDb;
 import operation.CustomException;
+import operation.MysqlOperation;
+import operation.PsqlOperation;
 import user.User;
 
 public class UserDb 
 {
-	MailDb mailObj = new MailDb();
-
+	//MailDb mailObj = new MailDb();
+	
+	ChooseDb store = null;
+	
+	public void setMysql()
+	{
+		store = new MysqlOperation();
+	}
+	
+	public void setPsql()
+	{
+		store = new PsqlOperation();
+	}
 
 	public void createTable()throws CustomException
 	{
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.CREATE.createUserTable())) {
+		try (PreparedStatement statement = store.getConnection()
+				.prepareStatement(store.createUserTable())) {
 			statement.executeUpdate();
 		} 
 		catch(CustomException e)
@@ -38,8 +52,8 @@ public class UserDb
 		
 		String role="";
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.SELECT_USER.getRole(),
+		try (PreparedStatement statement = store.getConnection()
+				.prepareStatement(store.getRole(),
 						PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setInt(1, id);
@@ -68,8 +82,8 @@ public class UserDb
 		
 		String password="";
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.SELECT_USER.getPassword(),
+		try (PreparedStatement statement = store.getConnection()
+				.prepareStatement(store.getPassword(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setInt(1, id);
@@ -98,8 +112,8 @@ public class UserDb
 			
 		int id=0;
 		 
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.INSERT.addUser(),
+		try (PreparedStatement statement = store.getConnection()
+				.prepareStatement(store.addUser(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			
@@ -134,29 +148,33 @@ public class UserDb
 			throw new CustomException(e);
 		}
 		catch (Exception e) {
-			System.out.println(e.getMessage());
+			
 			throw new CustomException("Unable to add user");
 		}
 		
 	}
 	
-	public List<User> showWaitingList()throws CustomException
+	public List<User> showWaitingList(MailDb mailObj)throws CustomException
 	{
 		
 		List<User> list = new ArrayList<>();
 		
-		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.SELECT_ALL.showWaitingList()))
+		
+		try(PreparedStatement statement =store.getConnection()
+				.prepareStatement(store.showWaitingList()))
 		{
 			try (ResultSet result = statement.executeQuery()) 
 			{
 				while (result.next()) 
 				{
+					
 					User user = new User();
 					
 					int id=result.getInt("user_id");
 					user.setUser_id(id);
+				
 					String mail=mailObj.getMailById(id);
+					
 					user.setMail(mail);
 					user.setName(result.getString("name"));
 					user.setHuman_id(result.getString("human_id"));
@@ -176,6 +194,7 @@ public class UserDb
 			throw new CustomException(e.getMessage());
 		}
 		catch (Exception e) {
+			
 			throw new CustomException("Unable to fetch data");
 		}
 	}
@@ -185,8 +204,8 @@ public class UserDb
 		int id = user.getUser_id();
 		
 		
-		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.UPDATE_USER.approveAsUser()))
+		try(PreparedStatement statement =store.getConnection()
+				.prepareStatement(store.approveAsUser()))
 		{
 			statement.setInt(1, id);
 		
@@ -211,8 +230,8 @@ public class UserDb
        String role="admin";
 		
 		
-		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.UPDATE_USER.approveAsAdmin()))
+		try(PreparedStatement statement =store.getConnection()
+				.prepareStatement(store.approveAsAdmin()))
 		{
 			statement.setString(1, role);
 			statement.setInt(2, id);
@@ -231,13 +250,13 @@ public class UserDb
 		}
 	}
 	
-	public User getUser(int id)throws CustomException
+	public User getUser(int id,MailDb mailObj)throws CustomException
 	{
 		
 		User user = new User();
 		
-		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.SELECT_ALL.getUser()))
+		try(PreparedStatement statement =store.getConnection()
+				.prepareStatement(store.getUser()))
 		{
 			statement.setInt(1, id);
 			
@@ -270,8 +289,8 @@ public class UserDb
 	public void changePassword(String pass,int id)throws CustomException
 	{
 		
-		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.UPDATE_USER.changePassword()))
+		try(PreparedStatement statement =store.getConnection()
+				.prepareStatement(store.changePassword()))
 		{
 			statement.setString(1, pass);
 			statement.setInt(2, id);
@@ -292,8 +311,8 @@ public class UserDb
 	public boolean updateName(String name,int id)throws CustomException
 	{
 		
-		try(PreparedStatement statement =MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.UPDATE_USER.updateName()))
+		try(PreparedStatement statement =store.getConnection()
+				.prepareStatement(store.updateName()))
 		{
 			statement.setString(1, name);
 			statement.setInt(2, id);

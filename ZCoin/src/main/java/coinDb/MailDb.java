@@ -6,17 +6,128 @@ import java.sql.ResultSet;
 import java.util.List;
 
 import operation.Checker;
+import operation.ChooseDb;
 import operation.CustomException;
+import operation.MysqlOperation;
+import operation.PsqlOperation;
 import user.User;
 
 public class MailDb {
+	
+	ChooseDb store = null;
+	
+	public void setMysql()
+	{
+		store = new MysqlOperation();
+	}
+	
+	public void setPsql()
+	{
+		store = new PsqlOperation();
+	}
+	
+	public void createDomainInteger()throws CustomException
+	{
+		try (PreparedStatement statement = store.getConnection()
+				.prepareStatement(store.createDomainInteger())) {
+			statement.execute();
+		} 
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
+			
+			System.out.println("Domain : "+e.getMessage());
+			throw new CustomException("Unable to create Domain for number");
+		}
+	}
+	
+	public void createDomainMail()throws CustomException
+	{
+		try (PreparedStatement statement = store.getConnection()
+				.prepareStatement(store.createDomainMail())) {
+			statement.executeUpdate();
+		} 
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
+			throw new CustomException("Unable to create Domain for mail");
+		}
+	}
+	
+	public void createSequenceId()throws CustomException
+	{
+		try (PreparedStatement statement = store.getConnection()
+				.prepareStatement(store.createSequenceId())) {
+			statement.executeUpdate();
+		} 
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
+			
+			throw new CustomException("Unable to create Sequence for Id");
+		}
+	}
+	
+	public void createSequenceAccount()throws CustomException
+	{
+		try (PreparedStatement statement = store.getConnection()
+				.prepareStatement(store.createSequenceAccount())) {
+			statement.executeUpdate();
+		} 
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
+			throw new CustomException("Unable to create Sequence for account number");
+		}
+	}
+	
+	public void createDatabase()throws CustomException
+	{
+		
+		try (PreparedStatement statement = store.getConnection()
+				.prepareStatement(store.createDatabase())) {
+			statement.executeUpdate();
+		} 
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
+			System.out.println("db : "+e.getMessage());
+			throw new CustomException("Unable to create Database");
+		}
+	}
+	
+	public void createDatabasePsql()throws CustomException
+	{
+		try (PreparedStatement statement = store.getConnection()
+				.prepareStatement(store.createDatabase())) {
+			statement.execute();
+		} 
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
+			System.out.println("db : "+e.getMessage());
+			throw new CustomException("Unable to create Database");
+		}
+	}
 	
 	public void createTable()throws CustomException
 	{
 		
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.CREATE.createMailTable())) {
+		try (PreparedStatement statement = store.getConnection()
+				.prepareStatement(store.createMailTable())) {
 			statement.executeUpdate();
 		} 
 		catch(CustomException e)
@@ -37,8 +148,8 @@ public class MailDb {
 		
 		int id=0;
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.SELECT_MAIL.getId(),
+		try (PreparedStatement statement = store.getConnection()
+				.prepareStatement(store.getId(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setString(1, mail);
@@ -65,8 +176,8 @@ public class MailDb {
 	public void addMail(String mail,int id)throws CustomException
 	{
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.INSERT.addMail(),
+		try (PreparedStatement statement = store.getConnection()
+				.prepareStatement(store.addMail(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setInt(1, id);
@@ -87,10 +198,12 @@ public class MailDb {
 	public String getMailById(int id)throws CustomException
 	{
 		
+		
 		String mail="";
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.SELECT_MAIL.getMailById(),
+		
+		try (PreparedStatement statement = store.getConnection()
+				.prepareStatement(store.getMailById(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setInt(1, id);
@@ -123,8 +236,8 @@ public class MailDb {
 		String mail_id=null;
 		boolean check=true;
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.SELECT_MAIL.checkMailExists(),
+		try (PreparedStatement statement = store.getConnection()
+				.prepareStatement(store.checkMailExists(),
 				PreparedStatement.RETURN_GENERATED_KEYS)) 
 		{
 			statement.setString(1, mail);

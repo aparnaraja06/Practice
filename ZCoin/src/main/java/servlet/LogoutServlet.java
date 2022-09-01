@@ -23,7 +23,7 @@ public class LogoutServlet extends HttpServlet {
 		if(session != null)
 		{
 			session.invalidate();
-			request.getRequestDispatcher("/Login.jsp").forward(request, response);
+			request.getRequestDispatcher("/SelectDb.jsp").forward(request, response);
 		}
 	}
 

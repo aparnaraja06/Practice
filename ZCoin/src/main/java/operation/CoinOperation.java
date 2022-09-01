@@ -17,18 +17,37 @@ public class CoinOperation
 	
 	public void createTable()throws CustomException
 	{
-		try
-		{
 		coin.createTable();
-		}
-		catch(CustomException e)
-		{
-			throw new CustomException(e.getMessage());
-		}
-		catch(Exception e)
-		{
-			throw new CustomException(e.getMessage());
-		}
+	}
+	
+	public void createDatabase()throws CustomException
+	{
+		coin.createDatabase();
+	}
+	
+	public void createDatabasePsql()throws CustomException
+	{
+		coin.createDatabasePsql();
+	}
+	
+	public void setMysql()
+	{
+		coin.setMysql();
+	}
+	
+	public void setPsql()
+	{
+		coin.setPsql();
+	}
+	
+	public void createDomain()throws CustomException
+	{
+		coin.createDomain();
+	}
+	
+	public void createSequence()throws CustomException
+	{
+		coin.createSequence();
 	}
 	
 	public String getRole(int id)throws CustomException

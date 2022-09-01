@@ -8,17 +8,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import operation.ChooseDb;
 import operation.CustomException;
+import operation.MysqlOperation;
+import operation.PsqlOperation;
 import transaction.Transaction;
 
 public class TransactionDb 
 {
+	
+  ChooseDb store = null;
+        
+    public void setMysql()
+     {
+    		store = new MysqlOperation();
+     }
+        
+    public void setPsql()
+    {
+    		store = new PsqlOperation();
+    }
 
 	public void createTable()throws CustomException
 	{
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.CREATE.createTransactionTable())) {
+		try (PreparedStatement statement = store.getConnection()
+				.prepareStatement(store.createTransactionTable())) {
 			statement.executeUpdate();
 		} 
 		catch(CustomException e)
@@ -33,8 +48,8 @@ public class TransactionDb
 	public void addTransaction(Transaction transfer)throws CustomException
 	{
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.INSERT.addTransaction())) {
+		try (PreparedStatement statement = store.getConnection()
+				.prepareStatement(store.addTransaction())) {
 		
 			int user_id = transfer.getUser_id();
 			int from_account = transfer.getFrom_account();
@@ -69,8 +84,8 @@ public class TransactionDb
 		
 		Map<Integer,List<Transaction>> transactionMap = new HashMap<>();
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.SELECT_ALL.getAllHistory())) 
+		try (PreparedStatement statement = store.getConnection()
+				.prepareStatement(store.getAllHistory())) 
 		{
 			try (ResultSet result = statement.executeQuery()) 
 			{
@@ -117,8 +132,8 @@ public class TransactionDb
 		
 		List<Transaction> list = new ArrayList<>();
 		
-		try (PreparedStatement statement = MysqlConnection.CONNECTION.getConnection()
-				.prepareStatement(MysqlQuery.SELECT_ACCOUNT.getHistoryByUserId())) 
+		try (PreparedStatement statement = store.getConnection()
+				.prepareStatement(store.getHistoryByUserId())) 
 		{
 			statement.setInt(1, user_id);
 			

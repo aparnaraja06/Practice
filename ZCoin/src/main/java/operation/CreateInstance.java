@@ -16,7 +16,6 @@ COINOPERATION;
 		{
 			coin = new CoinOperation();
 			
-			coin.createTable();
 			
 		}
 		

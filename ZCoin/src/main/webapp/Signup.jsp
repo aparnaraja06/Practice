@@ -191,9 +191,9 @@ else
 		{
 			alert("Point");
 			
-			document.getElementById('name').readonly = false;
+			document.getElementById('name').removeAttribute("readonly");
 			
-			document.getElementById('loginbtn').disabled = false;
+			document.getElementById('loginbtn').removeAttribute("disabled");
 			
 			var text = $('#name');
 			
@@ -236,8 +236,8 @@ else
 						 
 						 $('#msg').append("Successfully updated!");
 						 
-						 document.getElementById('name').readonly = true;
-						 document.getElementById('loginbtn').disabled = true;
+						 document.getElementById('name').setAttribute("readonly", "");
+						 document.getElementById('loginbtn').setAttribute("disabled", "");
 			
 					}
 					
