@@ -280,4 +280,21 @@ public class PsqlOperation implements ChooseDb{
 		return query;
 	}
 
+	@Override
+	public String checkDomainInteger() {
+		
+		String query = PsqlQuery.CHECK_DOMAIN_INTEGER.getQuery();
+		
+		return query;
+	}
+
+	@Override
+	public String checkDomainMail() {
+		
+		String query = PsqlQuery.CHECK_DOMAIN_MAIL.getQuery();
+		
+		return query;
+		
+	}
+
 }

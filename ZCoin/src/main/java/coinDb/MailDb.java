@@ -26,6 +26,60 @@ public class MailDb {
 		store = new PsqlOperation();
 	}
 	
+	public boolean checkDomainInteger()throws CustomException
+	{
+		boolean domain=false;
+		
+		try (PreparedStatement statement = store.getConnection().
+				prepareStatement(store.checkDomainInteger()))
+		{
+			try (ResultSet result = statement.executeQuery()) 
+			{
+				while (result.next()) 
+				{
+					 domain = result.getBoolean(1);
+				}
+				
+				return domain;
+			}
+		}
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
+			
+			throw new CustomException("Unable to get Domain for number");
+		}
+	}
+	
+	public boolean checkDomainMail()throws CustomException
+	{
+		boolean domain=false;
+		
+		try (PreparedStatement statement = store.getConnection().
+				prepareStatement(store.checkDomainMail()))
+		{
+			try (ResultSet result = statement.executeQuery()) 
+			{
+				while (result.next()) 
+				{
+					 domain = result.getBoolean(1);
+				}
+				
+				return domain;
+			}
+		}
+		catch(CustomException e)
+		{
+			throw new CustomException(e.getMessage());
+		}
+		catch (Exception e) {
+			
+			throw new CustomException("Unable to get Domain for mail");
+		}
+	}
+	
 	public void createDomainInteger()throws CustomException
 	{
 		try (PreparedStatement statement = store.getConnection()
@@ -38,7 +92,6 @@ public class MailDb {
 		}
 		catch (Exception e) {
 			
-			System.out.println("Domain : "+e.getMessage());
 			throw new CustomException("Unable to create Domain for number");
 		}
 	}
@@ -85,6 +138,7 @@ public class MailDb {
 			throw new CustomException(e.getMessage());
 		}
 		catch (Exception e) {
+			
 			throw new CustomException("Unable to create Sequence for account number");
 		}
 	}
@@ -101,7 +155,7 @@ public class MailDb {
 			throw new CustomException(e.getMessage());
 		}
 		catch (Exception e) {
-			System.out.println("db : "+e.getMessage());
+		
 			throw new CustomException("Unable to create Database");
 		}
 	}
@@ -117,7 +171,7 @@ public class MailDb {
 			throw new CustomException(e.getMessage());
 		}
 		catch (Exception e) {
-			System.out.println("db : "+e.getMessage());
+			
 			throw new CustomException("Unable to create Database");
 		}
 	}

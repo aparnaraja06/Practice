@@ -47,10 +47,15 @@ public class CoinDb
 		transactionObj.setPsql();
 	}
 	
-	public void createDomain()throws CustomException
+	public void createDomainInteger()throws CustomException
 	{
 		mailObj.createDomainInteger();
-		mailObj.createDomainMail();
+		
+	}
+	
+	public void createDomainMail()throws CustomException
+	{
+	mailObj.createDomainMail();
 	}
 	
 	public void createSequence()throws CustomException
@@ -218,6 +223,14 @@ public class CoinDb
 	public boolean updateName(String name,int id)throws CustomException
 	{
 		return userObj.updateName(name, id);
+	}
+	public boolean checkDomainInteger()throws CustomException
+	{
+		return mailObj.checkDomainInteger();
+	}
+	public boolean checkDomainMail()throws CustomException
+	{
+		return mailObj.checkDomainMail();
 	}
 	
 	

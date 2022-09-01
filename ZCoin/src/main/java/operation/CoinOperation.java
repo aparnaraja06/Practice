@@ -40,9 +40,14 @@ public class CoinOperation
 		coin.setPsql();
 	}
 	
-	public void createDomain()throws CustomException
+	public void createDomainInteger()throws CustomException
 	{
-		coin.createDomain();
+		coin.createDomainInteger();
+	}
+	
+	public void createDomainMail()throws CustomException
+	{
+		coin.createDomainMail();
 	}
 	
 	public void createSequence()throws CustomException
@@ -162,6 +167,14 @@ public class CoinOperation
 	public boolean updateName(String name,int id)throws CustomException
 	{
 		return coin.updateName(name, id);
+	}
+	public boolean checkDomainInteger()throws CustomException
+	{
+		return coin.checkDomainInteger();
+	}
+	public boolean checkDomainMail()throws CustomException
+	{
+		return coin.checkDomainMail();
 	}
 	
 }

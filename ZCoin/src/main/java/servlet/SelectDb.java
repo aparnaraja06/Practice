@@ -48,12 +48,24 @@ public class SelectDb extends HttpServlet {
 			{
 				
 				coin.setPsql();
+				
+				boolean check_int = coin.checkDomainInteger();
+				boolean check_mail = coin.checkDomainMail();
+				
+				if(!check_int)
+				{
+					coin.createDomainInteger();
+				}
+				else if(!check_mail)
+				{
+					coin.createDomainMail();
+				}
+				
 				coin.createDatabasePsql();
-				coin.createDomain();
 				coin.createTable();
 				coin.createSequence();
-
 				
+
 			}
 			else
 			{

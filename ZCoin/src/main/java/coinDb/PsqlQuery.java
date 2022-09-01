@@ -5,15 +5,18 @@ public enum PsqlQuery
 {
 	CREATE_DATABASE("SELECT 'CREATE DATABASE z_coin' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'z_coin')"),
 	
-	DOMAIN_INTEGER("create domain if not exists check_integer varchar(12) NOT NULL CHECK(value ~'[0-9]+')"),
+	CHECK_DOMAIN_INTEGER("select exists (select 1 from pg_type where typname = 'check_integer')"),
 	
-	DOMAIN_MAIL("CREATE DOMAIN IF NOT EXISTS"
-			+ "check_mail varchar(100) NOT NULL CHECK(value ~'^[A-Za-z0-9+-._]+@(.+)$')"),
+	CHECK_DOMAIN_MAIL("select exists (select 1 from pg_type where typname = 'check_mail')"),
+	
+	DOMAIN_INTEGER("create domain check_integer varchar(12) NOT NULL CHECK(value ~'[0-9]+')"),
+	
+	DOMAIN_MAIL("CREATE DOMAIN check_mail varchar(100) NOT NULL CHECK(value ~'^[A-Za-z0-9+-._]+@(.+)$')"),
 	
 	SEQUENCE_ID("CREATE SEQUENCE IF NOT EXISTS u_id start 100 increment 1 owned by customer.user_id"),
 	
 	SEQUENCE_ACC_NUM("CREATE SEQUENCE IF NOT EXISTS"
-			+ "accountNumber start 1000 increment 1 owned by account.account_num"),
+			+ " accountNumber start 1000 increment 1 owned by account.account_num"),
 	
 	CREATE_TABLE_USER("CREATE TABLE IF NOT EXISTS customer(user_id serial primary key,name varchar (50) not null, "
 			+ "mobile check_integer, human_id check_integer, password varchar(8) not null, "

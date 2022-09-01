@@ -53,8 +53,6 @@ public class SignupServlet extends HttpServlet {
 		
 		Checker check = CreateInstance.COINOPERATION.getCheckInstance();
 		
-		int id = (int)request.getSession().getAttribute("user_id");
-		
 		try
 		{
 		check.checkString(name);
@@ -66,6 +64,7 @@ public class SignupServlet extends HttpServlet {
 		
 		if(request.getParameter("type").equals("edit"))
 		{
+			int id = (int)request.getSession().getAttribute("user_id");
 			boolean result=coin.updateName(name, id);
 			
 			if(!result)

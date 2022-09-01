@@ -27,7 +27,6 @@ public class AccountDb {
 	
 	public void createTable() throws CustomException
 	{
-		System.out.println("In account create table");
 		
 		try (PreparedStatement statement = store.getConnection()
 				.prepareStatement(store.createAccountTable())) {

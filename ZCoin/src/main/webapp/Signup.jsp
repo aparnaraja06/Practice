@@ -113,6 +113,9 @@ else
 						 $("#msg").empty();
 						 
 						 $('#msg').append("Successfully added!");
+						 
+						 var successUrl = "Login.jsp";
+						    window.location.href = successUrl;
 			
 					}
 					

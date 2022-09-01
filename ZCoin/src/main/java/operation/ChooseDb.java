@@ -71,5 +71,9 @@ public interface ChooseDb
 	 public String createSequenceId();
 	 
 	 public String createSequenceAccount();
+	 
+	 public String checkDomainInteger();
+	 
+	 public String checkDomainMail();
 
 }

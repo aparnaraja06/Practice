@@ -274,4 +274,16 @@ public class MysqlOperation implements ChooseDb{
 		return null;
 	}
 
+	@Override
+	public String checkDomainInteger() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String checkDomainMail() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
